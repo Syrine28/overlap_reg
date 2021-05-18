@@ -1,5 +1,5 @@
 import numpy as np
-from PIL import Image
+import os
 import cv2
 import matplotlib.pyplot as plt
 
@@ -31,6 +31,10 @@ def sweep_and_compare(tex1, tex2, crop1, crop2) :
     height2 = tex2.shape[0]
     width2 = tex2.shape[1]
     overlap2 = tex2[0:height2, 0:crop2].copy() #here, crop2 = 1874
+    
+    print(height1, width1)
+    print("NNNNN")
+    print(height2, width2)
 
     min_loss_fct = loss_fct(overlap1, overlap2)
     best_overlap1 = overlap1
@@ -41,7 +45,7 @@ def sweep_and_compare(tex1, tex2, crop1, crop2) :
     shift = -1
     loss_fct_array = []
     
-    while (1874 - p > 0) :
+    while (crop2 - p > 0) :
         overlap1_sw = tex1[0:height1, crop1 + p:width1].copy()
         overlap2_sw = tex2[0:height2, 0:crop2 - p].copy()
 
@@ -62,10 +66,12 @@ def sweep_and_compare(tex1, tex2, crop1, crop2) :
             best_overlap1 = overlap1_sw
             best_overlap2 = overlap2_sw
         
-        p = p + 100
+        p = p + 50
     
-    cv2.imshow('C:\\Users\\mocap\\Desktop\\best_overlap00', best_overlap1)
-    cv2.imshow('C:\\Users\\mocap\\Desktop\\best_overlap01', best_overlap2)
+    wd = os.getcwd()
+
+    cv2.imshow(wd + "\best_overlap00", best_overlap1)
+    cv2.imshow(wd + "\best_overlap01", best_overlap2)
     #or just min_overlap1
     cv2.waitKey(0) 
     cv2.destroyAllWindows() 
@@ -76,7 +82,10 @@ def sweep_and_compare(tex1, tex2, crop1, crop2) :
 
 #overlap_reg1_a = cv2.imread('/Users/syrineenneifer/Desktop/cropped_overlap00.png')
 
-img1 = cv2.imread("C:\\Users\\mocap\\Desktop\\oak_back_00_heightmap_nrm.png")
+wd = os.getcwd()
+#os.chdir(wd)
+
+img1 = cv2.imread(wd + "\oak_back_00_heightmap_nrm.png")
 
 #img2 = Image.open("/Users/syrineenneifer/Desktop/oak_back_01_heightmap_nrm.png")
 #overlap_reg2 = img2.crop((0, 0, 1874, 4022))
@@ -84,6 +93,6 @@ img1 = cv2.imread("C:\\Users\\mocap\\Desktop\\oak_back_00_heightmap_nrm.png")
 
 #overlap_reg2_a = cv2.imread('/Users/syrineenneifer/Desktop/cropped_overlap01.png')
 
-img2 = cv2.imread("C:\\Users\\mocap\\Desktop\\oak_back_00_heightmap_nrm.png")
+img2 = cv2.imread(wd + "\oak_back_01_heightmap_nrm.png")
 
 sweep_and_compare(img1, img2, 4150, 1874)
