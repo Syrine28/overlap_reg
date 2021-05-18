@@ -24,41 +24,9 @@ def loss_fct(matrix_ov_reg1, matrix_ov_reg2) :
     return sum/(len(matrix_ov_reg1)) # len(matrix_ov_reg1) = # of pixels (same as reg2)
 
 def sweep_and_compare(tex1, tex2, crop1, crop2) :
-    """
-    min_loss_fct = loss_fct(overlap1_a, overlap2_a)
-    min_overlap1 = overlap1_a
-    min_overlap2 = overlap2_a
-
-    height1 = overlap1_a.shape[0]
-    width1 = overlap1_a.shape[1]
-    height2 = overlap2_a.shape[0]
-    width2 = overlap2_a.shape[1]
-    
-    while (width1 > 0) :
-        
-        overlap1_sw = overlap1_a[height1:height1, width1:width1-50]
-        overlap2_sw = overlap2_a[height2:height2, width2:width2-50]
-        
-        curr_loss_fct = loss_fct(overlap1_sw, overlap2_sw)
-        
-        if (curr_loss_fct < min_loss_fct) :
-            min_loss_fct = curr_loss_fct
-            min_overlap1 = overlap1_sw #or matrix_ov_reg1
-            min_overlap2 = overlap2_sw #or matrix_ov_reg2
-        
-        overlap1_a = overlap1_sw
-        overlap2_a = overlap2_sw
-    
-    return cv2.imshow('/Users/syrineenneifer/Desktop/best_overlap00' ,min_overlap1), cv2.imshow('/Users/syrineenneifer/Desktop/best_overlap01' ,min_overlap2) #or just min_overlap1
-    """
-
     height1 = tex1.shape[0]
     width1 = tex1.shape[1]
     overlap1 = tex1[0:height1, crop1:width1].copy()  #here, crop1 = 4150
-    
-    cv2.waitKey(0) 
-    cv2.destroyAllWindows() 
-
     
     height2 = tex2.shape[0]
     width2 = tex2.shape[1]
@@ -101,10 +69,6 @@ def sweep_and_compare(tex1, tex2, crop1, crop2) :
     #or just min_overlap1
     cv2.waitKey(0) 
     cv2.destroyAllWindows() 
-
-    # the problem is with the reducing the width and wight 
-    # TROUVE UNE AUTRE FACON DE SWEEP
-
 
 #img1 = Image.open("/Users/syrineenneifer/Desktop/oak_back_00_heightmap_nrm.png")
 #overlap_reg1 = img1.crop((4150, 0, 6024, 4022))
