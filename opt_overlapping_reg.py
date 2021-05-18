@@ -31,10 +31,6 @@ def sweep_and_compare(tex1, tex2, crop1, crop2) :
     height2 = tex2.shape[0]
     width2 = tex2.shape[1]
     overlap2 = tex2[0:height2, 0:crop2].copy() #here, crop2 = 1874
-    
-    print(height1, width1)
-    print("NNNNN")
-    print(height2, width2)
 
     min_loss_fct = loss_fct(overlap1, overlap2)
     best_overlap1 = overlap1
