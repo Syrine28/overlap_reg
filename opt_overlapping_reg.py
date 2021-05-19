@@ -2,6 +2,7 @@ import numpy as np
 import os
 import cv2
 import matplotlib.pyplot as plt
+from sklearn.metrics import mean_absolute_error as mae
 
 def normal_vector(pixels) :
     return np.multiply(pixels, 2) - np.ones(3)
@@ -18,11 +19,24 @@ def loss_fct(matrix_ov_reg1, matrix_ov_reg2) :
     for i in range(len(matrix_ov_reg1)) :
         n1 = normal_vector(convert_to_array(matrix_ov_reg1[i]))
         n2 = normal_vector(convert_to_array(matrix_ov_reg2[i]))
-        error = np.linalg.norm(n1-n2)
+        
+        # FIRST METHOD : 
+        #error = np.linalg.norm(n1 - n2) 
+        
+        # SECOND METHOD :
+        #error = 1 - np.dot(n1, n2)
+        
+        # THIRD METHOD :
+        error = mae(n1, n2)
+            
         sum += error
     
+    # FOR FIRST AND THIRD METHOD
     return sum/(len(matrix_ov_reg1)) # len(matrix_ov_reg1) = # of pixels (same as reg2)
-
+   
+    # FOR SECOND METHOD    
+    #return sum
+    
 def sweep_and_compare(tex1, tex2, crop1, crop2) :
     height1 = tex1.shape[0]
     width1 = tex1.shape[1]
@@ -31,7 +45,7 @@ def sweep_and_compare(tex1, tex2, crop1, crop2) :
     height2 = tex2.shape[0]
     width2 = tex2.shape[1]
     overlap2 = tex2[0:height2, 0:crop2].copy() #here, crop2 = 1874
-
+    
     min_loss_fct = loss_fct(overlap1, overlap2)
     best_overlap1 = overlap1
     best_overlap2 = overlap2
@@ -62,7 +76,7 @@ def sweep_and_compare(tex1, tex2, crop1, crop2) :
             best_overlap1 = overlap1_sw
             best_overlap2 = overlap2_sw
         
-        p = p + 50
+        p = p + 100
     
     wd = os.getcwd()
 
