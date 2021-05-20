@@ -48,7 +48,6 @@ def sweep_and_compare(tex1, tex2, crop1, crop2, threshold) :
     
     min_loss_fct = loss_fct(overlap1, overlap2)
     best_overlap1 = overlap1
-    best_overlap2 = overlap2
 
     p = 0
     shift_array = []
@@ -74,14 +73,12 @@ def sweep_and_compare(tex1, tex2, crop1, crop2, threshold) :
         if (curr_loss_fct < min_loss_fct) :
             min_loss_fct = curr_loss_fct
             best_overlap1 = overlap1_sw
-            best_overlap2 = overlap2_sw
         
         p = p + 25
     
     wd = os.getcwd()
 
     cv2.imshow(wd + "\best_overlap00", best_overlap1)
-    cv2.imshow(wd + "\best_overlap01", best_overlap2)
     #or just min_overlap1
     cv2.waitKey(0) 
     cv2.destroyAllWindows() 
