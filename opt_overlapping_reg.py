@@ -36,7 +36,7 @@ def loss_fct(matrix_ov_reg1, matrix_ov_reg2) :
    
     # FOR SECOND METHOD    
     #return sum
-    
+
 def sweep_and_compare(tex1, tex2, crop1, crop2, threshold) :
     height1 = tex1.shape[0]
     width1 = tex1.shape[1]
@@ -83,11 +83,7 @@ def sweep_and_compare(tex1, tex2, crop1, crop2, threshold) :
         #cv2.waitKey(0)
 
         p = p + 100
-    
-    wd = os.getcwd()
-    cv2.imshow(wd + "\best_overlap00", best_overlap1)
-    cv2.waitKey(0) 
-    cv2.destroyAllWindows() 
+   
     
     return best_overlap1, best_overlap2
 
@@ -111,32 +107,23 @@ def align_images(tex1, tex2, overlap1, overlap2) :
     tex2_wo_overlap = tex2[0:height2, width_over:width2].copy()
     
     final_img = np.concatenate((partial_img, tex2_wo_overlap), axis=1)
-    wd = os.getcwd()
-    cv2.imshow(wd + "\aligned_textures", final_img)
-    cv2.waitKey(0) 
-    cv2.destroyAllWindows()     
-    
+     
     return final_img
 
-#img1 = Image.open("/Users/syrineenneifer/Desktop/oak_back_00_heightmap_nrm.png")
-#overlap_reg1 = img1.crop((4150, 0, 6024, 4022))
-#overlap_reg1.save('/Users/syrineenneifer/Desktop/cropped_overlap00.png')
-
-#overlap_reg1_a = cv2.imread('/Users/syrineenneifer/Desktop/cropped_overlap00.png')
 
 wd = os.getcwd()
-#os.chdir(wd)
-
 img1 = cv2.imread(wd + "\oak_back_00_heightmap_nrm.png")
-
-#img2 = Image.open("/Users/syrineenneifer/Desktop/oak_back_01_heightmap_nrm.png")
-#overlap_reg2 = img2.crop((0, 0, 1874, 4022))
-#overlap_reg2.save('/Users/syrineenneifer/Desktop/cropped_overlap01.png')
-
-#overlap_reg2_a = cv2.imread('/Users/syrineenneifer/Desktop/cropped_overlap01.png')
+ 
 
 img2 = cv2.imread(wd + "\oak_back_01_heightmap_nrm.png")
 
 opt_overlap1, opt_overlap2 = sweep_and_compare(img1, img2, 4150, 1874, 10)
+cv2.imshow("opt_overlap1", opt_overlap1)
+cv2.imwrite("opt_overlap1.png", opt_overlap1)
+cv2.waitKey()
 
-align_images(img1, img2, opt_overlap1, opt_overlap2)
+
+final = align_images(img1, img2, opt_overlap1, opt_overlap2)
+cv2.imshow("final", final)
+cv2.imwrite("final.png", final)
+cv2.waitKey()
