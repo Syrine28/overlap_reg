@@ -37,7 +37,7 @@ def loss_fct(matrix_ov_reg1, matrix_ov_reg2) :
     # FOR SECOND METHOD    
     #return sum
     
-def sweep_and_compare(tex1, tex2, crop1, crop2) :
+def sweep_and_compare(tex1, tex2, crop1, crop2, threshold) :
     height1 = tex1.shape[0]
     width1 = tex1.shape[1]
     overlap1 = tex1[0:height1, crop1:width1].copy()  #here, crop1 = 4150
@@ -55,7 +55,7 @@ def sweep_and_compare(tex1, tex2, crop1, crop2) :
     shift = -1
     loss_fct_array = []
     
-    while (crop2 - p > 0) :
+    while (crop2 - p > threshold) :
         overlap1_sw = tex1[0:height1, crop1 + p:width1].copy()
         overlap2_sw = tex2[0:height2, 0:crop2 - p].copy()
 
@@ -76,7 +76,7 @@ def sweep_and_compare(tex1, tex2, crop1, crop2) :
             best_overlap1 = overlap1_sw
             best_overlap2 = overlap2_sw
         
-        p = p + 100
+        p = p + 25
     
     wd = os.getcwd()
 
@@ -105,4 +105,4 @@ img1 = cv2.imread(wd + "\oak_back_00_heightmap_nrm.png")
 
 img2 = cv2.imread(wd + "\oak_back_01_heightmap_nrm.png")
 
-sweep_and_compare(img1, img2, 4150, 1874)
+sweep_and_compare(img1, img2, 4150, 1874, 10)
