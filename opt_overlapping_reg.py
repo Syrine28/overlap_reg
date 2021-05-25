@@ -84,13 +84,9 @@ def sweep_and_compare(tex1, tex2, crop1, crop2, threshold) :
 
         p = p + 100
    
-    
     return best_overlap1, best_overlap2
 
 def align_images_hor(tex1, tex2, overlap1, overlap2) :
-    #We'll blur out the overlapping region in img2 then superimpose tex1 on top of tex2
-    #blurred_overlap2 = cv2.blur(overlap2, (r,r))
-    
     #We'll blend both overlaps together
     blended = cv2.addWeighted(overlap1, 0.75, overlap2, 0.25, 0.0)
     
@@ -112,9 +108,6 @@ def align_images_hor(tex1, tex2, overlap1, overlap2) :
     return final_img
 
 def align_images_ver(tex1, tex2, overlap1, overlap2) :
-    #We'll blur out the overlapping region in img2 then superimpose tex1 on top of tex2
-    #blurred_overlap2 = cv2.blur(overlap2, (r,r))
-    
     #We'll blend both overlaps together
     blended = cv2.addWeighted(overlap1, 0.75, overlap2, 0.25, 0.0)
     
@@ -135,28 +128,44 @@ def align_images_ver(tex1, tex2, overlap1, overlap2) :
      
     return final_img
 
-def align_row() :
+#This function will take as input all the scans that are on the same row (IDK how many there are =: x)
+def align_row(img1, img2, img3, overlap1, overlap2_1, overlap2_3, overlap3) :
     #For a whole row 
+     
+    #Find overlap between the 2 pics, blend the two same overlaps
+    #Remove it from the original scans then concatenate them to the overlap
+    partial1 = align_images_hor(img1, img2, overlap1, overlap2_1)
+    partial2 = align_images_hor(partial1, img3, overlap2_3, overlap3)
     
-    #while () :
-    
-        #Find overlap between the 2 pics, blend the two same overlaps
-        #Remove it from the original scans then concatenate them to the overlap
+    final = partial2
+    #Do that for all pics and overlaps
+    #Too long???? 
         
-        return None
+    #Then return the last partial = final
+    
+    return final
 
 wd = os.getcwd()
 img1 = cv2.imread(wd + "\oak_back_00_heightmap_nrm.png")
  
 img2 = cv2.imread(wd + "\oak_back_01_heightmap_nrm.png")
 
-opt_overlap1, opt_overlap2 = sweep_and_compare(img1, img2, 4150, 1874, 10)
+img3 = cv2.imread(wd + "\oak_back_02_heightmap_nrm.png")
+
+opt_overlap1, opt_overlap2_1 = sweep_and_compare(img1, img2, 4150, 1874, 10)
+opt_overlap2_3, opt_overlap3 = sweep_and_compare(img2, img3, 4150, 1874, 10)
+
 cv2.imshow("opt_overlap1", opt_overlap1)
 cv2.imwrite("opt_overlap1.png", opt_overlap1)
 cv2.waitKey()
 
 
-final = align_images_hor(img1, img2, opt_overlap1, opt_overlap2)
-cv2.imshow("final", final)
-cv2.imwrite("final.png", final)
+#p1 = align_images_hor(img1, img2, opt_overlap1, opt_overlap2_1) 
+#cv2.imshow("partial1", p1)
+#cv2.imwrite("partial1.png", p1)
+#cv2.waitKey()
+
+p2 = align_row(img1, img2, img3, opt_overlap1, opt_overlap2_1, opt_overlap2_3, opt_overlap3)
+cv2.imshow("partial2", p2)
+cv2.imwrite("partial2.png", p2)
 cv2.waitKey()
