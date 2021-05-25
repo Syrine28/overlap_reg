@@ -87,18 +87,19 @@ def sweep_and_compare(tex1, tex2, crop1, crop2, threshold) :
     
     return best_overlap1, best_overlap2
 
-def align_images(tex1, tex2, overlap1, overlap2) :
+def align_images_hor(tex1, tex2, overlap1, overlap2) :
     #We'll blur out the overlapping region in img2 then superimpose tex1 on top of tex2
     #blurred_overlap2 = cv2.blur(overlap2, (r,r))
     
     #We'll blend both overlaps together
-    blended = cv2.addWeighted(overlap1, 0.3, overlap2, 0.7, 0.0)
+    blended = cv2.addWeighted(overlap1, 0.75, overlap2, 0.25, 0.0)
     
     #Now we paste tex1 without the overlap to blended
     width_over = overlap1.shape[1]  # = overlap1.shape[1]
     height1 = tex1.shape[0]
     width1 = tex1.shape[1]
     tex1_wo_overlap = tex1[0:height1, 0:width1 - width_over].copy()
+    #axis=1 is to concatenate them horizontally
     partial_img = np.concatenate((tex1_wo_overlap, blended), axis=1)
 
     #Now paste it to tex2 without the overlap to get the final image
@@ -110,11 +111,43 @@ def align_images(tex1, tex2, overlap1, overlap2) :
      
     return final_img
 
+def align_images_ver(tex1, tex2, overlap1, overlap2) :
+    #We'll blur out the overlapping region in img2 then superimpose tex1 on top of tex2
+    #blurred_overlap2 = cv2.blur(overlap2, (r,r))
+    
+    #We'll blend both overlaps together
+    blended = cv2.addWeighted(overlap1, 0.75, overlap2, 0.25, 0.0)
+    
+    #Now we paste tex1 without the overlap to blended
+    height_over = overlap1.shape[0]  # = overlap1.shape[0]
+    height1 = tex1.shape[0]
+    width1 = tex1.shape[1]
+    tex1_wo_overlap = tex1[height_over:height1, 0:width1].copy()
+    #axis=0 is to concatenate them vertically
+    partial_img = np.concatenate((tex1_wo_overlap, blended), axis=0)
+
+    #Now paste it to tex2 without the overlap to get the final image
+    height2 = tex2.shape[0]
+    width2 = tex2.shape[1]
+    tex2_wo_overlap = tex2[0:height2 - height_over, 0:width2].copy()
+    
+    final_img = np.concatenate((partial_img, tex2_wo_overlap), axis=0)
+     
+    return final_img
+
+def align_row() :
+    #For a whole row 
+    
+    #while () :
+    
+        #Find overlap between the 2 pics, blend the two same overlaps
+        #Remove it from the original scans then concatenate them to the overlap
+        
+        return None
 
 wd = os.getcwd()
 img1 = cv2.imread(wd + "\oak_back_00_heightmap_nrm.png")
  
-
 img2 = cv2.imread(wd + "\oak_back_01_heightmap_nrm.png")
 
 opt_overlap1, opt_overlap2 = sweep_and_compare(img1, img2, 4150, 1874, 10)
@@ -123,7 +156,7 @@ cv2.imwrite("opt_overlap1.png", opt_overlap1)
 cv2.waitKey()
 
 
-final = align_images(img1, img2, opt_overlap1, opt_overlap2)
+final = align_images_hor(img1, img2, opt_overlap1, opt_overlap2)
 cv2.imshow("final", final)
 cv2.imwrite("final.png", final)
 cv2.waitKey()
