@@ -24,18 +24,18 @@ def loss_fct(matrix_ov_reg1, matrix_ov_reg2) :
         #error = np.linalg.norm(n1 - n2) 
         
         # SECOND METHOD :
-        #error = 1 - np.dot(n1, n2)
+        error = 1 - np.dot(n1, n2)
         
         # THIRD METHOD :
-        error = mae(n1, n2)
+        #error = mae(n1, n2)
             
         sum += error
     
     # FOR FIRST AND THIRD METHOD
-    return sum/(len(matrix_ov_reg1)) # len(matrix_ov_reg1) = # of pixels (same as reg2)
+    #return sum/(len(matrix_ov_reg1)) # len(matrix_ov_reg1) = # of pixels (same as reg2)
    
     # FOR SECOND METHOD    
-    #return sum
+    return sum
 
 def sweep_and_compare(tex1, tex2, crop1, crop2, threshold) :
     height1 = tex1.shape[0]
@@ -82,7 +82,7 @@ def sweep_and_compare(tex1, tex2, crop1, crop2, threshold) :
         #cv2.imshow(wd + "\sweeped_reg", overlap1_sw)
         #cv2.waitKey(0)
 
-        p = p + 100
+        p = p + 1
    
     return best_overlap1, best_overlap2
 
