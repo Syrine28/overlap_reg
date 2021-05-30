@@ -128,6 +128,15 @@ def align_images_ver(tex1, tex2, overlap1, overlap2) :
      
     return final_img
 
+
+def align_right_and_down(img, img_right, img_down, overlap_right1, overlap_right2, overlap_down1, overlap_down2) :
+    #blended_right = cv2.addWeighted(overlap_right1, 0.75, overlap_right2, 0.25, 0.0)
+    #blended_down = cv2.addWeighted(overlap_down1, 0.75, overlap_down2, 0.25, 0.0)
+    
+    final_right = align_images_hor(img, img_right, overlap_right1, overlap_right2)
+    final_down = align_images_ver(img, img_down, overlap_down1, overlap_down2)
+    return final_right, final_down   
+    
 #This function will take as input all the scans that are on the same row (IDK how many there are =: x)
 def align_row(img1, img2, img3, overlap1, overlap2_1, overlap2_3, overlap3) :
     #For a whole row 
