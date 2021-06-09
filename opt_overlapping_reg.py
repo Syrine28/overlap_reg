@@ -21,10 +21,10 @@ def loss_fct(matrix_ov_reg1, matrix_ov_reg2) :
         n2 = normal_vector(convert_to_array(matrix_ov_reg2[i]))
         
         # FIRST METHOD : 
-        error = np.linalg.norm(n1 - n2) 
+        #error = np.linalg.norm(n1 - n2) 
         
         # SECOND METHOD :
-        #error = 1 - np.dot(n1, n2)
+        error = 1 - np.dot(n1, n2)
         
         # THIRD METHOD :
         #error = mae(n1, n2)
@@ -32,10 +32,10 @@ def loss_fct(matrix_ov_reg1, matrix_ov_reg2) :
         sum += error
     
     # FOR FIRST AND THIRD METHOD
-    return sum/(len(matrix_ov_reg1)) # len(matrix_ov_reg1) = # of pixels (same as reg2)
+    #return sum/(len(matrix_ov_reg1)) # len(matrix_ov_reg1) = # of pixels (same as reg2)
    
     # FOR SECOND METHOD    
-    #return sum
+    return sum
 
 #ONLY FOR HORIZONTAL OVERLAPPING
 def sweep_and_compare(tex1, tex2, crop1, crop2) :
@@ -81,13 +81,13 @@ def sweep_and_compare(tex1, tex2, crop1, crop2) :
         #cv2.imshow(wd + "\sweeped_reg", overlap1_sw)
         #cv2.waitKey(0)
 
-        p = p + 50
+        p = p + 5
    
     return best_overlap1, best_overlap2
 
 def align_images_hor(tex1, tex2, overlap1, overlap2) :
     #We'll blend both overlaps together
-    blended = cv2.addWeighted(overlap1, 0.75, overlap2, 0.25, 0.0)
+    blended = cv2.addWeighted(overlap1, 0.5, overlap2, 0.5, 0.0)
     
     #Now we paste tex1 without the overlap to blended
     width_over = overlap1.shape[1]  # = overlap1.shape[1]
@@ -163,7 +163,7 @@ def align_row(img1, img2, img3, img4, img5, img6, img7,
 wd = os.getcwd()
 
 # oak 
-
+"""
 img1 = cv2.imread(wd + "\oak_back_00_heightmap_nrm.png")
  
 img2 = cv2.imread(wd + "\oak_back_01_heightmap_nrm.png")
@@ -177,7 +177,7 @@ img5 = cv2.imread(wd + "\oak_back_04_heightmap_nrm.png")
 img6 = cv2.imread(wd + "\oak_back_05_heightmap_nrm.png")
 
 img7 = cv2.imread(wd + "\oak_back_06_heightmap_nrm.png")
-
+"""
 
 # acrylic 
 """
@@ -195,18 +195,64 @@ img6 = cv2.imread("acrylic05.png")
 
 img7 = cv2.imread("acrylic06.png")
 """
+# pine
+"""
+img1 = cv2.imread("pine00.png")
 
-# FOR OAK : crop1 = 4150, crop2 = 1874
+img2 = cv2.imread("pine01.png")
+
+img3 = cv2.imread("pine02.png")
+
+img4 = cv2.imread("pine03.png")
+
+img5 = cv2.imread("pine04.png")
+
+img6 = cv2.imread("pine05.png")
+
+img7 = cv2.imread("pine06.png")
+"""
+# nylon
+"""
+img1 = cv2.imread("nylon00.png")
+
+img2 = cv2.imread("nylon01.png")
+
+img3 = cv2.imread("nylon02.png")
+
+img4 = cv2.imread("nylon03.png")
+
+img5 = cv2.imread("nylon04.png")
+
+img6 = cv2.imread("nylon05.png")
+
+img7 = cv2.imread("nylon06.png")
+"""
+
+# steel
+img1 = cv2.imread(wd + "\steel_back_00_heightmap_nrm.png")
+ 
+img2 = cv2.imread(wd + "\steel_back_01_heightmap_nrm.png")
+
+img3 = cv2.imread(wd + "\steel_back_02_heightmap_nrm.png")
+
+img4 = cv2.imread(wd + "\steel_back_03_heightmap_nrm.png")
+
+img5 = cv2.imread(wd + "\steel_back_04_heightmap_nrm.png")
+
+img6 = cv2.imread(wd + "\steel_back_05_heightmap_nrm.png")
+
+img7 = cv2.imread(wd + "\steel_back_06_heightmap_nrm.png")
+
+
+# FOR OAK : crop1 = 4600, crop2 = 1424
 # FOR ACRYLIC : crop1 = 4800, crop2 = 1224
 
-opt_overlap1, opt_overlap2_1 = sweep_and_compare(img1, img2, 4150, 1874) 
-opt_overlap2_3, opt_overlap3_2 = sweep_and_compare(img2, img3, 4150, 1874)
-opt_overlap3_4, opt_overlap4_3 = sweep_and_compare(img3, img4, 4150, 1874)
-opt_overlap4_5, opt_overlap5_4 = sweep_and_compare(img4, img5, 4150, 1874)
-opt_overlap5_6, opt_overlap6_5 = sweep_and_compare(img5, img6, 4150, 1874)
-opt_overlap6_7, opt_overlap7 = sweep_and_compare(img6, img7, 4150, 1874)
-
-#TRY CHANGING THRESHOLD TO 5 FOR EXAMPLE
+opt_overlap1, opt_overlap2_1 = sweep_and_compare(img1, img2, 4700, 1324) 
+opt_overlap2_3, opt_overlap3_2 = sweep_and_compare(img2, img3, 4700, 1324)
+opt_overlap3_4, opt_overlap4_3 = sweep_and_compare(img3, img4, 4700, 1324)
+opt_overlap4_5, opt_overlap5_4 = sweep_and_compare(img4, img5, 4700, 1324)
+opt_overlap5_6, opt_overlap6_5 = sweep_and_compare(img5, img6, 4700, 1324)
+opt_overlap6_7, opt_overlap7 = sweep_and_compare(img6, img7, 4700, 1324)
 
 cv2.imshow("opt_overlap5_6", opt_overlap5_6)
 cv2.imwrite("opt_overlap5_6.png", opt_overlap5_6)
@@ -216,11 +262,10 @@ cv2.imshow("opt_overlap6_5", opt_overlap6_5)
 cv2.imwrite("opt_overlap6_5.png", opt_overlap6_5)
 cv2.waitKey()
 
-
 final_row = align_row(img1, img2, img3, img4, img5, img6, img7, 
                opt_overlap1, opt_overlap2_1, opt_overlap2_3, opt_overlap3_2,
                opt_overlap3_4, opt_overlap4_3, opt_overlap4_5, opt_overlap5_4,
                opt_overlap5_6, opt_overlap6_5, opt_overlap6_7, opt_overlap7)
-cv2.imshow("final_row_oak", final_row)
-cv2.imwrite("final_row_oak.png", final_row)
+cv2.imshow("final_row_steel", final_row)
+cv2.imwrite("final_row_steel.png", final_row)
 cv2.waitKey()
