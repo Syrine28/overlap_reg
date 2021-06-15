@@ -180,72 +180,109 @@ img7 = cv2.imread(wd + "\oak_back_06_heightmap_nrm.png")
 """
 
 # acrylic 
-"""
-img1 = cv2.imread("acrylic00.png")
 
-img2 = cv2.imread("acrylic01.png")
+img1 = cv2.imread("acrylic_00_heightmap_nrm.png")
 
-img3 = cv2.imread("acrylic02.png")
+img2 = cv2.imread("acrylic_01_heightmap_nrm.png")
 
-img4 = cv2.imread("acrylic03.png")
+img3 = cv2.imread("acrylic_02_heightmap_nrm.png")
 
-img5 = cv2.imread("acrylic04.png")
+img4 = cv2.imread("acrylic_03_heightmap_nrm.png")
 
-img6 = cv2.imread("acrylic05.png")
+img5 = cv2.imread("acrylic_04_heightmap_nrm.png")
 
-img7 = cv2.imread("acrylic06.png")
-"""
+img6 = cv2.imread("acrylic_05_heightmap_nrm.png")
+
+img7 = cv2.imread("acrylic_06_heightmap_nrm.png")
+
+
 # pine
 """
-img1 = cv2.imread("pine00.png")
+img1 = cv2.imread("pine_00_heightmap_nrm.png")
 
-img2 = cv2.imread("pine01.png")
+img2 = cv2.imread("pine_01_heightmap_nrm.png")
 
-img3 = cv2.imread("pine02.png")
+img3 = cv2.imread("pine_02_heightmap_nrm.png")
 
-img4 = cv2.imread("pine03.png")
+img4 = cv2.imread("pine_03_heightmap_nrm.png")
 
-img5 = cv2.imread("pine04.png")
+img5 = cv2.imread("pine_04_heightmap_nrm.png")
 
-img6 = cv2.imread("pine05.png")
+img6 = cv2.imread("pine_05_heightmap_nrm.png")
 
-img7 = cv2.imread("pine06.png")
+img7 = cv2.imread("pine_06_heightmap_nrm.png")
 """
+
 # nylon
 """
-img1 = cv2.imread("nylon00.png")
+img1 = cv2.imread("nylon_00_heightmap_nrm.png")
 
-img2 = cv2.imread("nylon01.png")
+img2 = cv2.imread("nylon_01_heightmap_nrm.png")
 
-img3 = cv2.imread("nylon02.png")
+img3 = cv2.imread("nylon_02_heightmap_nrm.png")
 
-img4 = cv2.imread("nylon03.png")
+img4 = cv2.imread("nylon_03_heightmap_nrm.png")
 
-img5 = cv2.imread("nylon04.png")
+img5 = cv2.imread("nylon_04_heightmap_nrm.png")
 
-img6 = cv2.imread("nylon05.png")
+img6 = cv2.imread("nylon_05_heightmap_nrm.png")
 
-img7 = cv2.imread("nylon06.png")
+img7 = cv2.imread("nylon_06_heightmap_nrm.png")
 """
 
 # steel
-img1 = cv2.imread(wd + "\steel_back_00_heightmap_nrm.png")
+"""
+img1 = cv2.imread("steel_00_heightmap_nrm.png")
  
-img2 = cv2.imread(wd + "\steel_back_01_heightmap_nrm.png")
+img2 = cv2.imread("steel_01_heightmap_nrm.png")
 
-img3 = cv2.imread(wd + "\steel_back_02_heightmap_nrm.png")
+img3 = cv2.imread("steel_02_heightmap_nrm.png")
 
-img4 = cv2.imread(wd + "\steel_back_03_heightmap_nrm.png")
+img4 = cv2.imread("steel_03_heightmap_nrm.png")
 
-img5 = cv2.imread(wd + "\steel_back_04_heightmap_nrm.png")
+img5 = cv2.imread("steel_04_heightmap_nrm.png")
 
-img6 = cv2.imread(wd + "\steel_back_05_heightmap_nrm.png")
+img6 = cv2.imread("steel_05_heightmap_nrm.png")
 
-img7 = cv2.imread(wd + "\steel_back_06_heightmap_nrm.png")
-
+img7 = cv2.imread("steel_06_heightmap_nrm.png")
+"""
 
 # FOR OAK : crop1 = 4600, crop2 = 1424
 # FOR ACRYLIC : crop1 = 4800, crop2 = 1224
+
+# rosewood
+"""
+img1 = cv2.imread("rosewood_00_heightmap_nrm.png")
+ 
+img2 = cv2.imread("rosewood_01_heightmap_nrm.png")
+
+img3 = cv2.imread("rosewood_02_heightmap_nrm.png")
+
+img4 = cv2.imread("rosewood_03_heightmap_nrm.png")
+
+img5 = cv2.imread("rosewood_04_heightmap_nrm.png")
+
+img6 = cv2.imread("rosewood_05_heightmap_nrm.png")
+
+img7 = cv2.imread("rosewood_06_heightmap_nrm.png")
+"""
+
+# aluminium
+"""
+img1 = cv2.imread("alu_00_heightmap_nrm.png")
+ 
+img2 = cv2.imread("alu_01_heightmap_nrm.png")
+
+img3 = cv2.imread("alu_02_heightmap_nrm.png")
+
+img4 = cv2.imread("alu_03_heightmap_nrm.png")
+
+img5 = cv2.imread("alu_04_heightmap_nrm.png")
+
+img6 = cv2.imread("alu_05_heightmap_nrm.png")
+
+img7 = cv2.imread("alu_06_heightmap_nrm.png")
+"""
 
 opt_overlap1, opt_overlap2_1 = sweep_and_compare(img1, img2, 4700, 1324) 
 opt_overlap2_3, opt_overlap3_2 = sweep_and_compare(img2, img3, 4700, 1324)
@@ -266,6 +303,6 @@ final_row = align_row(img1, img2, img3, img4, img5, img6, img7,
                opt_overlap1, opt_overlap2_1, opt_overlap2_3, opt_overlap3_2,
                opt_overlap3_4, opt_overlap4_3, opt_overlap4_5, opt_overlap5_4,
                opt_overlap5_6, opt_overlap6_5, opt_overlap6_7, opt_overlap7)
-cv2.imshow("final_row_steel", final_row)
-cv2.imwrite("final_row_steel.png", final_row)
+cv2.imshow("final_row_acrylic", final_row)
+cv2.imwrite("final_row_acrylic.png", final_row)
 cv2.waitKey()
