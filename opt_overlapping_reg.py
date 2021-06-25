@@ -213,7 +213,7 @@ def sweep_and_compare_hor(tex1, tex2, crop1, crop2) :
         #cv2.imshow(wd + "\sweeped_reg", overlap1_sw)
         #cv2.waitKey(0)
 
-        p = p + 10
+        p = p + 5
             
     return crop1 + min_p #or just min_p????
 
@@ -244,7 +244,7 @@ def sweep_and_compare_ver(tex1, tex2, crop1, crop2) :
     loss_fct_array = []
     min_p = p
     
-    while (crop1 - p > 0) :
+    while (crop2 - p > 0) :
         overlap1_sw = tex1[0:crop1 - p, 0:width1].copy()
         overlap2_sw = tex2[crop2:height2 - p, 0:width2].copy()
                     
@@ -267,12 +267,14 @@ def sweep_and_compare_ver(tex1, tex2, crop1, crop2) :
             min_p = p
                     
         # This is just to get pics of the sweeped areas
-        #wd = os.getcwd()
-        #cv2.imshow(wd + "\sweeped_reg", overlap1_sw)
+        #cv2.imshow("\sweeped_reg1", overlap1_sw)
         #cv2.waitKey(0)
 
-        p = p + 10
-            
+        #cv2.imshow("\sweeped_reg2", overlap2_sw)
+        #cv2.waitKey(0)
+
+        p = p + 5
+    print(crop1 - min_p)       
     return crop1 - min_p #or just min_p????
 
 def align_images_ver(tex1, tex2, offset_ver) :
@@ -315,89 +317,72 @@ def align_row(img1, img2, img3, img4, img5, img6, img7,
 
 wd = os.getcwd()
 
-# oak 
-"""
-img1 = cv2.imread(wd + "\oak_back_00_heightmap_nrm.png")
- 
-img2 = cv2.imread(wd + "\oak_back_01_heightmap_nrm.png")
-
-img3 = cv2.imread(wd + "\oak_back_02_heightmap_nrm.png")
-
-img4 = cv2.imread(wd + "\oak_back_03_heightmap_nrm.png")
-
-img5 = cv2.imread(wd + "\oak_back_04_heightmap_nrm.png")
-
-img6 = cv2.imread(wd + "\oak_back_05_heightmap_nrm.png")
-
-img7 = cv2.imread(wd + "\oak_back_06_heightmap_nrm.png")
-"""
-
 # acrylic 
 """
-img1 = cv2.imread("acrylic_00_heightmap_nrm.png")
+img1 = cv2.imread("C:\\Users\\mocap\\Desktop\\acrylic\\acrylic_00_heightmap_nrm.png")
 
-img2 = cv2.imread("acrylic_01_heightmap_nrm.png")
+img2 = cv2.imread("C:\\Users\\mocap\\Desktop\\acrylic\\acrylic_01_heightmap_nrm.png")
 
-img3 = cv2.imread("acrylic_02_heightmap_nrm.png")
+img3 = cv2.imread("C:\\Users\\mocap\\Desktop\\acrylic\\acrylic_02_heightmap_nrm.png")
 
-img4 = cv2.imread("acrylic_03_heightmap_nrm.png")
+img4 = cv2.imread("C:\\Users\\mocap\\Desktop\\acrylic\\acrylic_03_heightmap_nrm.png")
 
-img5 = cv2.imread("acrylic_04_heightmap_nrm.png")
+img5 = cv2.imread("C:\\Users\\mocap\\Desktop\\acrylic\\acrylic_04_heightmap_nrm.png")
 
-img6 = cv2.imread("acrylic_05_heightmap_nrm.png")
+img6 = cv2.imread("C:\\Users\\mocap\\Desktop\\acrylic\\acrylic_05_heightmap_nrm.png")
 
-img7 = cv2.imread("acrylic_06_heightmap_nrm.png")
+img7 = cv2.imread("C:\\Users\\mocap\\Desktop\\acrylic\\acrylic_06_heightmap_nrm.png")
 """
 
 # pine
 """
-img1 = cv2.imread("pine_00_heightmap_nrm.png")
+img1 = cv2.imread("C:\\Users\\mocap\\Desktop\\pine\\pine_00_heightmap_nrm.png")
 
-img2 = cv2.imread("pine_01_heightmap_nrm.png")
+img2 = cv2.imread("C:\\Users\\mocap\\Desktop\\pine\\pine_01_heightmap_nrm.png")
 
-img3 = cv2.imread("pine_02_heightmap_nrm.png")
+img3 = cv2.imread("C:\\Users\\mocap\\Desktop\\pine\\pine_02_heightmap_nrm.png")
 
-img4 = cv2.imread("pine_03_heightmap_nrm.png")
+img4 = cv2.imread("C:\\Users\\mocap\\Desktop\\pine\\pine_03_heightmap_nrm.png")
 
-img5 = cv2.imread("pine_04_heightmap_nrm.png")
+img5 = cv2.imread("C:\\Users\\mocap\\Desktop\\pine\\pine_04_heightmap_nrm.png")
 
-img6 = cv2.imread("pine_05_heightmap_nrm.png")
+img6 = cv2.imread("C:\\Users\\mocap\\Desktop\\pine\\pine_05_heightmap_nrm.png")
 
-img7 = cv2.imread("pine_06_heightmap_nrm.png")
+img7 = cv2.imread("C:\\Users\\mocap\\Desktop\\pine\\pine_06_heightmap_nrm.png")
 """
 
 # nylon
 """
-img1 = cv2.imread("nylon_00_heightmap_nrm.png")
+img1 = cv2.imread("C:\\Users\\mocap\\Desktop\\nylon\\nylon_00_heightmap_nrm.png")
 
-img2 = cv2.imread("nylon_01_heightmap_nrm.png")
+img2 = cv2.imread("C:\\Users\\mocap\\Desktop\\nylon\\nylon_01_heightmap_nrm.png")
 
-img3 = cv2.imread("nylon_02_heightmap_nrm.png")
+img3 = cv2.imread("C:\\Users\\mocap\\Desktop\\nylon\\nylon_02_heightmap_nrm.png")
 
-img4 = cv2.imread("nylon_03_heightmap_nrm.png")
+img4 = cv2.imread("C:\\Users\\mocap\\Desktop\\nylon\\nylon_03_heightmap_nrm.png")
 
-img5 = cv2.imread("nylon_04_heightmap_nrm.png")
+img5 = cv2.imread("C:\\Users\\mocap\\Desktop\\nylon\\nylon_04_heightmap_nrm.png")
 
-img6 = cv2.imread("nylon_05_heightmap_nrm.png")
+img6 = cv2.imread("C:\\Users\\mocap\\Desktop\\nylon\\nylon_05_heightmap_nrm.png")
 
-img7 = cv2.imread("nylon_06_heightmap_nrm.png")
+img7 = cv2.imread("C:\\Users\\mocap\\Desktop\\nylon\\nylon_06_heightmap_nrm.png")
 """
 
 # steel
 """
-img1 = cv2.imread("steel_00_heightmap_nrm.png")
+img1 = cv2.imread("C:\\Users\\mocap\\Desktop\\steel\\steel_00_heightmap_nrm.png")
  
-img2 = cv2.imread("steel_01_heightmap_nrm.png")
+img2 = cv2.imread("C:\\Users\\mocap\\Desktop\\steel\\steel_01_heightmap_nrm.png")
 
-img3 = cv2.imread("steel_02_heightmap_nrm.png")
+img3 = cv2.imread("C:\\Users\\mocap\\Desktop\\steel\\steel_02_heightmap_nrm.png")
 
-img4 = cv2.imread("steel_03_heightmap_nrm.png")
+img4 = cv2.imread("C:\\Users\\mocap\\Desktop\\steel\\steel_03_heightmap_nrm.png")
 
-img5 = cv2.imread("steel_04_heightmap_nrm.png")
+img5 = cv2.imread("C:\\Users\\mocap\\Desktop\\steel\\steel_04_heightmap_nrm.png")
 
-img6 = cv2.imread("steel_05_heightmap_nrm.png")
+img6 = cv2.imread("C:\\Users\\mocap\\Desktop\\steel\\steel_05_heightmap_nrm.png")
 
-img7 = cv2.imread("steel_06_heightmap_nrm.png")
+img7 = cv2.imread("C:\\Users\\mocap\\Desktop\\steel\\steel_06_heightmap_nrm.png")
 """
 
 # FOR OAK : crop1 = 4600, crop2 = 1424
@@ -405,56 +390,116 @@ img7 = cv2.imread("steel_06_heightmap_nrm.png")
 
 # rosewood
 """
-img1 = cv2.imread("rosewood_00_heightmap_nrm.png")
+img1 = cv2.imread("C:\\Users\\mocap\\Desktop\\rosewood\\rosewood_00_heightmap_nrm.png")
  
-img2 = cv2.imread("rosewood_01_heightmap_nrm.png")
+img2 = cv2.imread("C:\\Users\\mocap\\Desktop\\rosewood\\rosewood_01_heightmap_nrm.png")
 
-img3 = cv2.imread("rosewood_02_heightmap_nrm.png")
+img3 = cv2.imread("C:\\Users\\mocap\\Desktop\\rosewood\\rosewood_02_heightmap_nrm.png")
 
-img4 = cv2.imread("rosewood_03_heightmap_nrm.png")
+img4 = cv2.imread("C:\\Users\\mocap\\Desktop\\rosewood\\rosewood_03_heightmap_nrm.png")
 
-img5 = cv2.imread("rosewood_04_heightmap_nrm.png")
+img5 = cv2.imread("C:\\Users\\mocap\\Desktop\\rosewood\\rosewood_04_heightmap_nrm.png")
 
-img6 = cv2.imread("rosewood_05_heightmap_nrm.png")
+img6 = cv2.imread("C:\\Users\\mocap\\Desktop\\rosewood\\rosewood_05_heightmap_nrm.png")
 
-img7 = cv2.imread("rosewood_06_heightmap_nrm.png")
+img7 = cv2.imread("C:\\Users\\mocap\\Desktop\\rosewood\\rosewood_06_heightmap_nrm.png")
 """
 
 # aluminium
 """
-img1 = cv2.imread("alu_00_heightmap_nrm.png")
+img1 = cv2.imread("C:\\Users\\mocap\\Desktop\\alu\\alu_00_heightmap_nrm.png")
  
-img2 = cv2.imread("alu_01_heightmap_nrm.png")
+img2 = cv2.imread("C:\\Users\\mocap\\Desktop\\alu\\alu_01_heightmap_nrm.png")
 
-img3 = cv2.imread("alu_02_heightmap_nrm.png")
+img3 = cv2.imread("C:\\Users\\mocap\\Desktop\\alu\\alu_02_heightmap_nrm.png")
 
-img4 = cv2.imread("alu_03_heightmap_nrm.png")
+img4 = cv2.imread("C:\\Users\\mocap\\Desktop\\alu\\alu_03_heightmap_nrm.png")
 
-img5 = cv2.imread("alu_04_heightmap_nrm.png")
+img5 = cv2.imread("C:\\Users\\mocap\\Desktop\\alu\\alu_04_heightmap_nrm.png")
 
-img6 = cv2.imread("alu_05_heightmap_nrm.png")
+img6 = cv2.imread("C:\\Users\\mocap\\Desktop\\alu\\alu_05_heightmap_nrm.png")
 
-img7 = cv2.imread("alu_06_heightmap_nrm.png")
+img7 = cv2.imread("C:\\Users\\mocap\\Desktop\\alu\\alu_06_heightmap_nrm.png")
+
+img8 = cv2.imread("C:\\Users\\mocap\\Desktop\\alu\\alu_07_heightmap_nrm.png")
 """
+
 
 # pvc
 
-img1 = cv2.imread("pvc_00_heightmap_nrm.png")
+img1 = cv2.imread("C:\\Users\\mocap\\Desktop\\pvc\\pvc_00_heightmap_nrm.png")
  
-img2 = cv2.imread("pvc_01_heightmap_nrm.png")
+img2 = cv2.imread("C:\\Users\\mocap\\Desktop\\pvc\\pvc_01_heightmap_nrm.png")
 
-img3 = cv2.imread("pvc_02_heightmap_nrm.png")
+img3 = cv2.imread("C:\\Users\\mocap\\Desktop\\pvc\\pvc_02_heightmap_nrm.png")
 
-img4 = cv2.imread("pvc_03_heightmap_nrm.png")
+img4 = cv2.imread("C:\\Users\\mocap\\Desktop\\pvc\\pvc_03_heightmap_nrm.png")
 
-img5 = cv2.imread("pvc_04_heightmap_nrm.png")
+img5 = cv2.imread("C:\\Users\\mocap\\Desktop\\pvc\\pvc_04_heightmap_nrm.png")
 
-img6 = cv2.imread("pvc_05_heightmap_nrm.png")
+img6 = cv2.imread("C:\\Users\\mocap\\Desktop\\pvc\\pvc_05_heightmap_nrm.png")
 
-img7 = cv2.imread("pvc_06_heightmap_nrm.png")
+img7 = cv2.imread("C:\\Users\\mocap\\Desktop\\pvc\\pvc_06_heightmap_nrm.png")
 
-img8 = cv2.imread("pvc_07_heightmap_nrm.png")
+img8 = cv2.imread("C:\\Users\\mocap\\Desktop\\pvc\\pvc_07_heightmap_nrm.png")
 
+
+# brass
+"""
+img1 = cv2.imread("C:\\Users\\mocap\\Desktop\\brass\\brass_00_heightmap_nrm.png")
+ 
+img2 = cv2.imread("C:\\Users\\mocap\\Desktop\\brass\\brass_01_heightmap_nrm.png")
+
+img3 = cv2.imread("C:\\Users\\mocap\\Desktop\\brass\\brass_02_heightmap_nrm.png")
+
+img4 = cv2.imread("C:\\Users\\mocap\\Desktop\\brass\\brass_03_heightmap_nrm.png")
+
+img5 = cv2.imread("C:\\Users\\mocap\\Desktop\\brass\\brass_04_heightmap_nrm.png")
+
+img6 = cv2.imread("C:\\Users\\mocap\\Desktop\\brass\\brass_05_heightmap_nrm.png")
+
+img7 = cv2.imread("C:\\Users\\mocap\\Desktop\\brass\\brass_06_heightmap_nrm.png")
+
+img8 = cv2.imread("C:\\Users\\mocap\\Desktop\\brass\\brass_07_heightmap_nrm.png")
+"""
+
+# copper
+"""
+img1 = cv2.imread("C:\\Users\\mocap\\Desktop\\copper\\copper_00_heightmap_nrm.png")
+ 
+img2 = cv2.imread("C:\\Users\\mocap\\Desktop\\copper\\copper_01_heightmap_nrm.png")
+
+img3 = cv2.imread("C:\\Users\\mocap\\Desktop\\copper\\copper_02_heightmap_nrm.png")
+
+img4 = cv2.imread("C:\\Users\\mocap\\Desktop\\copper\\copper_03_heightmap_nrm.png")
+
+img5 = cv2.imread("C:\\Users\\mocap\\Desktop\\copper\\copper_04_heightmap_nrm.png")
+
+img6 = cv2.imread("C:\\Users\\mocap\\Desktop\\copper\\copper_05_heightmap_nrm.png")
+
+img7 = cv2.imread("C:\\Users\\mocap\\Desktop\\copper\\copper_06_heightmap_nrm.png")
+
+img8 = cv2.imread("C:\\Users\\mocap\\Desktop\\copper\\copper_07_heightmap_nrm.png")
+"""
+
+# oak
+"""
+img1 = cv2.imread("C:\\Users\\mocap\\Desktop\\oak\\oak_00_heightmap_nrm.png")
+ 
+img2 = cv2.imread("C:\\Users\\mocap\\Desktop\\oak\\oak_01_heightmap_nrm.png")
+
+img3 = cv2.imread("C:\\Users\\mocap\\Desktop\\oak\\oak_02_heightmap_nrm.png")
+
+img4 = cv2.imread("C:\\Users\\mocap\\Desktop\\oak\\oak_03_heightmap_nrm.png")
+
+img5 = cv2.imread("C:\\Users\\mocap\\Desktop\\oak\\oak_04_heightmap_nrm.png")
+
+img6 = cv2.imread("C:\\Users\\mocap\\Desktop\\oak\\oak_05_heightmap_nrm.png")
+
+img7 = cv2.imread("C:\\Users\\mocap\\Desktop\\oak\\oak_06_heightmap_nrm.png")
+
+img8 = cv2.imread("C:\\Users\\mocap\\Desktop\\oak\\oak_07_heightmap_nrm.png")
+"""
 
 
 #THIS IS FOR FIRST METHOD
@@ -490,7 +535,8 @@ cv2.imshow("final_row_pvc", final_row)
 cv2.imwrite("final_row_pvc.png", final_row)
 cv2.waitKey()
 """
-offset_ver1 = sweep_and_compare_ver(img1, img8, 2000, 2022) 
+offset_ver1 = sweep_and_compare_ver(img1, img8, 2000, 2022)
+print(offset_ver1)
 
 img_right, img_down = align_right_and_down(img1, img2, img8, offset_hor1, offset_ver1)
 cv2.imshow("pvc_right", img_right)
