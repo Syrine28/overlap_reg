@@ -21,10 +21,10 @@ def loss_fct(matrix_ov_reg1, matrix_ov_reg2) :
         n2 = normal_vector(convert_to_array(matrix_ov_reg2[i]))
         
         # FIRST METHOD : 
-        #error = np.linalg.norm(n1 - n2) 
+        error = np.linalg.norm(n1 - n2) 
         
         # SECOND METHOD :
-        error = 1 - np.dot(n1, n2)
+        #error = 1 - np.dot(n1, n2)
         
         # THIRD METHOD :
         #error = mae(n1, n2)
@@ -32,10 +32,10 @@ def loss_fct(matrix_ov_reg1, matrix_ov_reg2) :
         sum += error
     
     # FOR FIRST AND THIRD METHOD
-    #return sum/(len(matrix_ov_reg1)) # len(matrix_ov_reg1) = # of pixels (same as reg2)
+    return sum/(len(matrix_ov_reg1)) # len(matrix_ov_reg1) = # of pixels (same as reg2)
    
     # FOR SECOND METHOD    
-    return sum
+    #return sum
 
 
 #FIRST METHOD OF ALIGNING
@@ -173,7 +173,8 @@ def sweep_and_compare_hor(tex1, tex2, crop1, crop2) :
     width1 = tex1.shape[1]
     overlap1 = tex1[0:height1, crop1:width1].copy()
     
-    height2 = tex2.shape[0]
+    height2 = tex2.shape[0] 
+    width2 = tex2.shape[1]
     overlap2 = tex2[0:height2, 0:crop2].copy()
     
     min_loss_fct = loss_fct(overlap1, overlap2)
@@ -195,25 +196,26 @@ def sweep_and_compare_hor(tex1, tex2, crop1, crop2) :
         
         shift = shift + 1
         shift_array.append(shift)
-        
+        """
         plt.xlabel('Shift number')
         plt.ylabel('Loss function value')
         
         plt.plot(shift_array, loss_fct_array)
         plt.show()
-
+        """
         if (curr_loss_fct < min_loss_fct) :
             min_loss_fct = curr_loss_fct
             best_overlap1 = overlap1_sw
             best_overlap2 = overlap2_sw
             min_p = p
                     
-        # This is just to get pics of the sweeped areas
-        #wd = os.getcwd()
-        #cv2.imshow(wd + "\sweeped_reg", overlap1_sw)
-        #cv2.waitKey(0)
-
-        p = p + 5
+        p = p + 1
+        
+    plt.xlabel('Shift number')
+    plt.ylabel('Loss function value for horizontal alignment')
+        
+    plt.plot(shift_array, loss_fct_array)
+    plt.show()
             
     return crop1 + min_p #or just min_p????
 
@@ -228,11 +230,11 @@ def align_images_hor(tex1, tex2, offset_hor) :
 def sweep_and_compare_ver(tex1, tex2, crop1, crop2) :
     height1 = tex1.shape[0]
     width1 = tex1.shape[1]
-    overlap1 = tex1[0:crop1, 0:width1].copy()
+    overlap1 = tex1[crop1:height1, 0:width1].copy()
     
-    height2 = tex2.shape[0]
+    height2 = tex2.shape[0] 
     width2 = tex2.shape[1]
-    overlap2 = tex2[crop2:height2, 0:width2].copy()
+    overlap2 = tex2[0:crop2, 0:width2].copy()
     
     min_loss_fct = loss_fct(overlap1, overlap2)
     best_overlap1 = overlap1
@@ -244,43 +246,36 @@ def sweep_and_compare_ver(tex1, tex2, crop1, crop2) :
     loss_fct_array = []
     min_p = p
     
-    while (crop2 - p > 0) :
-        overlap1_sw = tex1[0:crop1 - p, 0:width1].copy()
-        overlap2_sw = tex2[crop2:height2 - p, 0:width2].copy()
+    while (crop1 + p < height1 - 50) :
+        overlap1_sw = tex1[crop1 + p:height1, 0:width1].copy()
+        overlap2_sw = tex2[p:crop2, 0:width2].copy()
                     
         curr_loss_fct = loss_fct(overlap1_sw, overlap2_sw)
         loss_fct_array.append(curr_loss_fct)
         
         shift = shift + 1
         shift_array.append(shift)
-        
-        plt.xlabel('Shift number')
-        plt.ylabel('Loss function value')
-        
-        plt.plot(shift_array, loss_fct_array)
-        plt.show()
-
+       
         if (curr_loss_fct < min_loss_fct) :
             min_loss_fct = curr_loss_fct
             best_overlap1 = overlap1_sw
             best_overlap2 = overlap2_sw
             min_p = p
                     
-        # This is just to get pics of the sweeped areas
-        #cv2.imshow("\sweeped_reg1", overlap1_sw)
-        #cv2.waitKey(0)
-
-        #cv2.imshow("\sweeped_reg2", overlap2_sw)
-        #cv2.waitKey(0)
-
-        p = p + 5
-    print(crop1 - min_p)       
-    return crop1 - min_p #or just min_p????
+        p = p + 1
+   
+    plt.xlabel('Shift number')
+    plt.ylabel('Loss function value for vertical alignment')
+        
+    plt.plot(shift_array, loss_fct_array)
+    plt.show()
+    
+    return crop1 + min_p #or just min_p????
 
 def align_images_ver(tex1, tex2, offset_ver) :
     height1 = tex1.shape[0]
     width1 = tex1.shape[1]
-    tex1_wo_overlap = tex1[offset_ver:height1, 0:width1].copy()
+    tex1_wo_overlap = tex1[0:offset_ver, 0:width1].copy()
     
     final_img = np.concatenate((tex1_wo_overlap, tex2), axis=0)
      
@@ -332,7 +327,28 @@ img5 = cv2.imread("C:\\Users\\mocap\\Desktop\\acrylic\\acrylic_04_heightmap_nrm.
 img6 = cv2.imread("C:\\Users\\mocap\\Desktop\\acrylic\\acrylic_05_heightmap_nrm.png")
 
 img7 = cv2.imread("C:\\Users\\mocap\\Desktop\\acrylic\\acrylic_06_heightmap_nrm.png")
+
+img8 = cv2.imread("C:\\Users\\mocap\\Desktop\\acrylic\\acrylic_07_heightmap_nrm.png")
 """
+
+# scaled acrylic
+
+img1 = cv2.imread("C:\\Users\\mocap\\Desktop\\acrylic\\acrylic_00_heightmap_nrm_scaled.png")
+
+img2 = cv2.imread("C:\\Users\\mocap\\Desktop\\acrylic\\acrylic_01_heightmap_nrm_scaled.png")
+
+img3 = cv2.imread("C:\\Users\\mocap\\Desktop\\acrylic\\acrylic_02_heightmap_nrm_scaled.png")
+
+img4 = cv2.imread("C:\\Users\\mocap\\Desktop\\acrylic\\acrylic_03_heightmap_nrm_scaled.png")
+
+img5 = cv2.imread("C:\\Users\\mocap\\Desktop\\acrylic\\acrylic_04_heightmap_nrm_scaled.png")
+
+img6 = cv2.imread("C:\\Users\\mocap\\Desktop\\acrylic\\acrylic_05_heightmap_nrm_scaled.png")
+
+img7 = cv2.imread("C:\\Users\\mocap\\Desktop\\acrylic\\acrylic_06_heightmap_nrm_scaled.png")
+
+img8 = cv2.imread("C:\\Users\\mocap\\Desktop\\acrylic\\acrylic_07_heightmap_nrm_scaled.png")
+
 
 # pine
 """
@@ -424,9 +440,8 @@ img7 = cv2.imread("C:\\Users\\mocap\\Desktop\\alu\\alu_06_heightmap_nrm.png")
 img8 = cv2.imread("C:\\Users\\mocap\\Desktop\\alu\\alu_07_heightmap_nrm.png")
 """
 
-
 # pvc
-
+"""
 img1 = cv2.imread("C:\\Users\\mocap\\Desktop\\pvc\\pvc_00_heightmap_nrm.png")
  
 img2 = cv2.imread("C:\\Users\\mocap\\Desktop\\pvc\\pvc_01_heightmap_nrm.png")
@@ -442,7 +457,7 @@ img6 = cv2.imread("C:\\Users\\mocap\\Desktop\\pvc\\pvc_05_heightmap_nrm.png")
 img7 = cv2.imread("C:\\Users\\mocap\\Desktop\\pvc\\pvc_06_heightmap_nrm.png")
 
 img8 = cv2.imread("C:\\Users\\mocap\\Desktop\\pvc\\pvc_07_heightmap_nrm.png")
-
+"""
 
 # brass
 """
@@ -520,12 +535,19 @@ final_row = align_row(img1, img2, img3, img4, img5, img6, img7,
 
 #THIS IS FOR SECOND METHOD
 
+#THIS IS FOR NON-SCALED IMAGES
+"""
 offset_hor1 = sweep_and_compare_hor(img1, img2, 4700, 1324) 
 offset_hor2 = sweep_and_compare_hor(img2, img3, 4700, 1324)
 offset_hor3 = sweep_and_compare_hor(img3, img4, 4700, 1324)
 offset_hor4 = sweep_and_compare_hor(img4, img5, 4700, 1324)
 offset_hor5 = sweep_and_compare_hor(img5, img6, 4700, 1324)
 offset_hor6 = sweep_and_compare_hor(img6, img7, 4700, 1324)
+"""
+#THIS IS FOR SCALED IMAGES
+
+offset_hor1 = sweep_and_compare_hor(img1, img2, 2350, 662) 
+
 """
 final_row = final_row = align_row(img1, img2, img3, img4, img5, img6, img7, offset_hor1,
                                   offset_hor2, offset_hor3, offset_hor4, offset_hor5, offset_hor6)
@@ -535,14 +557,21 @@ cv2.imshow("final_row_pvc", final_row)
 cv2.imwrite("final_row_pvc.png", final_row)
 cv2.waitKey()
 """
-offset_ver1 = sweep_and_compare_ver(img1, img8, 2000, 2022)
-print(offset_ver1)
+
+#THIS IS FOR NON_SCALED IMAGES
+
+#offset_ver1 = sweep_and_compare_ver(img1, img8, 2000, 2022)
+
+
+#THIS IS FOR SCALED IMAGES
+
+offset_ver1 = sweep_and_compare_ver(img1, img8, 1000, 1011)
 
 img_right, img_down = align_right_and_down(img1, img2, img8, offset_hor1, offset_ver1)
-cv2.imshow("pvc_right", img_right)
-cv2.imwrite("pvc_right.png", img_right)
+cv2.imshow("sc_acrylic_right", img_right)
+cv2.imwrite("sc_acrylic_right.png", img_right)
 cv2.waitKey()
 
-cv2.imshow("pvc_down", img_down)
-cv2.imwrite("pvc_down.png", img_down)
+cv2.imshow("sc_acrylic_down", img_down)
+cv2.imwrite("sc_acrylic_down.png", img_down)
 cv2.waitKey()
