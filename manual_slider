@@ -1,0 +1,53 @@
+from tkinter import *
+from PIL import ImageTk, Image
+import cv2
+import numpy as np
+
+def normal_vector(pixels) :
+    return np.multiply(pixels, 2) - np.ones(3)
+    #2 * pixels - 1
+
+def convert_to_array_ver(crop, img) :
+    row_pixel = []
+    for i in range(0,img.shape[1]):
+        pixel = img[crop, i]/255
+        row_pixel.append(pixel)
+    return row_pixel 
+
+def loss_fct_ver(img1, img2, crop1) :
+   
+    n1 = normal_vector(convert_to_array_ver(crop1, img1))
+    n2 = normal_vector(convert_to_array_ver(0, img2))
+        
+    # FIRST METHOD : 
+    error = np.linalg.norm(n1 - n2) 
+        
+    # SECOND METHOD :
+    #error = 1 - np.dot(n1, n2)
+            
+    return error
+        
+
+def grab() :
+    image1 = cv2.imread("C:\\Users\\mocap\\Desktop\\acrylic\\acrylic_00_heightmap_nrm_scaled.png")
+    image2 = cv2.imread("C:\\Users\\mocap\\Desktop\\acrylic\\acrylic_01_heightmap_nrm_scaled.png")
+    crop = int(my_spin.get())
+    my_label.config(text = loss_fct_ver(image1, image2, crop))
+
+#get crop1 from spinbox
+root = Tk()
+
+
+root.title("Slider")
+root.geometry("500x400")
+
+my_spin = Spinbox(root, from_ = 1000, to = 2011)
+my_spin.pack(pady = 20)
+
+my_button = Button(root, text = "Compute loss function", command = grab)
+my_button.pack(pady = 20)
+
+my_label = Label(root, text = "")
+my_label.pack(pady = 20)
+
+root.mainloop()
