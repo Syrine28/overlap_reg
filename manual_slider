@@ -26,17 +26,38 @@ def loss_fct_ver(img1, img2, crop1) :
     #error = 1 - np.dot(n1, n2)
             
     return error
+
+def align_images_ver(tex1, tex2, offset_ver) :
+
+    width1 = tex1.shape[1]
+    tex1_wo_overlap = tex1[0:offset_ver, 0:width1].copy()
+    
+    final_img = np.concatenate((tex1_wo_overlap, tex2), axis=0)
+     
+    return final_img
         
 
 def grab() :
     image1 = cv2.imread("C:\\Users\\mocap\\Desktop\\acrylic\\acrylic_00_heightmap_nrm_scaled.png")
     image2 = cv2.imread("C:\\Users\\mocap\\Desktop\\acrylic\\acrylic_01_heightmap_nrm_scaled.png")
+    
     crop = int(my_spin.get())
-    my_label.config(text = loss_fct_ver(image1, image2, crop))
+    
+    error = loss_fct_ver(image1, image2, crop)
+    
+    my_label.config(text = error)
+    
+    final_img = align_images_ver(image1, image2, crop)
+  
+    cv2.imshow("align_ver.png", final_img)
+    cv2.imwrite("align_ver.png", final_img)
+    cv2.waitKey()
+    
+    show_image = PhotoImage(file = "align_ver.png")
+    lab = Label(root, image = show_image)
+    lab.pack()
 
-#get crop1 from spinbox
 root = Tk()
-
 
 root.title("Slider")
 root.geometry("500x400")
