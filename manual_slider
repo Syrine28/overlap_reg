@@ -39,15 +39,18 @@ def align_images_ver(tex1, tex2, offset_ver) :
 
 def grab() :
     image1 = cv2.imread("C:\\Users\\mocap\\Desktop\\acrylic\\acrylic_00_heightmap_nrm_scaled.png")
-    image2 = cv2.imread("C:\\Users\\mocap\\Desktop\\acrylic\\acrylic_01_heightmap_nrm_scaled.png")
+    image2 = cv2.imread("C:\\Users\\mocap\\Desktop\\acrylic\\acrylic_07_heightmap_nrm_scaled.png")
+    
+    resized_image1 = cv2.resize(image1, (1006, 1506))
+    resized_image2 = cv2.resize(image2, (1006, 1506))
     
     crop = int(my_spin.get())
     
-    error = loss_fct_ver(image1, image2, crop)
+    error = loss_fct_ver(resized_image1, resized_image2, crop)
     
     my_label.config(text = error)
     
-    final_img = align_images_ver(image1, image2, crop)
+    final_img = align_images_ver(resized_image1, resized_image2, crop)
   
     cv2.imshow("align_ver.png", final_img)
     cv2.imwrite("align_ver.png", final_img)
@@ -62,7 +65,7 @@ root = Tk()
 root.title("Slider")
 root.geometry("500x400")
 
-my_spin = Spinbox(root, from_ = 1000, to = 2011)
+my_spin = Spinbox(root, from_ = 500, to = 1006)
 my_spin.pack(pady = 20)
 
 my_button = Button(root, text = "Compute loss function", command = grab)
