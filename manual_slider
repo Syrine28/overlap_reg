@@ -14,6 +14,35 @@ def convert_to_array_ver(crop, img) :
         row_pixel.append(pixel)
     return row_pixel 
 
+def convert_to_array_hor(crop, img) :
+    col_pixel = []
+    for i in range(0,img.shape[0]):
+        pixel = img[i, crop]/255
+        col_pixel.append(pixel)
+    return col_pixel 
+
+def loss_fct_hor(img1, img2, crop1) :
+   
+    n1 = normal_vector(convert_to_array_hor(crop1, img1))
+    n2 = normal_vector(convert_to_array_hor(0, img2))
+        
+    # FIRST METHOD : 
+    error = np.linalg.norm(n1 - n2) 
+        
+    # SECOND METHOD :
+    #error = 1 - np.dot(n1, n2)
+            
+    return error
+        
+def align_images_hor(tex1, tex2, offset_hor) :
+    
+    height1 = tex1.shape[0]
+    tex1_wo_overlap = tex1[0:height1, 0:offset_hor].copy()
+    
+    final_img = np.concatenate((tex1_wo_overlap, tex2), axis=1)
+    
+    return final_img
+
 def loss_fct_ver(img1, img2, crop1) :
    
     n1 = normal_vector(convert_to_array_ver(crop1, img1))
@@ -38,25 +67,25 @@ def align_images_ver(tex1, tex2, offset_ver) :
         
 
 def grab() :
-    image1 = cv2.imread("C:\\Users\\mocap\\Desktop\\acrylic\\acrylic_00_heightmap_nrm_scaled.png")
-    image2 = cv2.imread("C:\\Users\\mocap\\Desktop\\acrylic\\acrylic_07_heightmap_nrm_scaled.png")
+    image1 = cv2.imread("C:\\Users\\mocap\\Desktop\\pvc\\pvc_00_heightmap_nrm_scaled.png")
+    image2 = cv2.imread("C:\\Users\\mocap\\Desktop\\pvc\\pvc_01_heightmap_nrm_scaled.png")
     
     resized_image1 = cv2.resize(image1, (1006, 1506))
     resized_image2 = cv2.resize(image2, (1006, 1506))
     
     crop = int(my_spin.get())
     
-    error = loss_fct_ver(resized_image1, resized_image2, crop)
+    error = loss_fct_hor(resized_image1, resized_image2, crop)
     
     my_label.config(text = error)
     
-    final_img = align_images_ver(resized_image1, resized_image2, crop)
+    final_img = align_images_hor(resized_image1, resized_image2, crop)
   
-    cv2.imshow("align_ver.png", final_img)
-    cv2.imwrite("align_ver.png", final_img)
+    cv2.imshow("align_hor.png", final_img)
+    cv2.imwrite("align_hor.png", final_img)
     cv2.waitKey()
     
-    show_image = PhotoImage(file = "align_ver.png")
+    show_image = PhotoImage(file = "align_hor.png")
     lab = Label(root, image = show_image)
     lab.pack()
 
@@ -65,7 +94,7 @@ root = Tk()
 root.title("Slider")
 root.geometry("500x400")
 
-my_spin = Spinbox(root, from_ = 500, to = 1006)
+my_spin = Spinbox(root, from_ = 1000, to = 1506)
 my_spin.pack(pady = 20)
 
 my_button = Button(root, text = "Compute loss function", command = grab)
