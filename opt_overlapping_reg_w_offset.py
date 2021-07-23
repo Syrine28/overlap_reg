@@ -3,6 +3,7 @@ import os
 import cv2
 import matplotlib.pyplot as plt
 from sklearn.metrics import mean_absolute_error as mae
+import cma
 
 def normal_vector(pixels) :
     return np.multiply(pixels, 2) - np.ones(3)
@@ -24,6 +25,27 @@ def convert_to_array_ver_al(crop, img) :
 
 
 #SECOND METHOD OF ALIGNING
+
+def cma_hor(img1, img2, crop1) :
+
+    def obj_fc(x) :
+
+        for x in range(crop1, img1.shape[1]) :
+            n1 = normal_vector(convert_to_array_hor_al(x, img1))
+            n2 = normal_vector(convert_to_array_hor_al(0, img2))
+            error = np.linalg.norm(n1 - n2)
+        
+        return error
+    
+    inputs = [crop1]
+    
+    for i in range(crop1, img1.shape[1]) :
+        inputs.append(i + 1)
+
+    fc_min = cma.fmin(obj_fc, inputs, 1)
+   
+    print("CMA")
+    print(fc_min)
 
 def sweep_and_compare_hor(img1, img2, crop1)  :
     
@@ -48,13 +70,15 @@ def sweep_and_compare_hor(img1, img2, crop1)  :
         shifts.append(shift)
         
     offset = np.argmin(results) + crop1
-    
+        
     plt.xlabel('Shift number')
     plt.ylabel('Loss function value for horizontal alignment')
         
     plt.plot(shifts, results)
     plt.show()
     
+    print("")
+    print("STANDARD")
     print(offset)
     
     return offset
@@ -140,41 +164,9 @@ def align_row(img1, img2, img3, img4, img5, img6,
     return final
 
 
-# scaled acrylic
-
-img1 = cv2.imread("C:\\Users\\mocap\\Desktop\\acrylic\\acrylic_00_heightmap_nrm_scaled.png")
-
-img2 = cv2.imread("C:\\Users\\mocap\\Desktop\\acrylic\\acrylic_01_heightmap_nrm_scaled.png")
-
-img3 = cv2.imread("C:\\Users\\mocap\\Desktop\\acrylic\\acrylic_02_heightmap_nrm_scaled.png")
-
-img4 = cv2.imread("C:\\Users\\mocap\\Desktop\\acrylic\\acrylic_03_heightmap_nrm_scaled.png")
-
-img5 = cv2.imread("C:\\Users\\mocap\\Desktop\\acrylic\\acrylic_04_heightmap_nrm_scaled.png")
-
-img6 = cv2.imread("C:\\Users\\mocap\\Desktop\\acrylic\\acrylic_05_heightmap_nrm_scaled.png")
-
-img7 = cv2.imread("C:\\Users\\mocap\\Desktop\\acrylic\\acrylic_06_heightmap_nrm_scaled.png")
-
-img8 = cv2.imread("C:\\Users\\mocap\\Desktop\\acrylic\\acrylic_07_heightmap_nrm_scaled.png")
-
-img9 = cv2.imread("C:\\Users\\mocap\\Desktop\\acrylic\\acrylic_08_heightmap_nrm_scaled.png")
-
-img10 = cv2.imread("C:\\Users\\mocap\\Desktop\\acrylic\\acrylic_09_heightmap_nrm_scaled.png")
-
-img11 = cv2.imread("C:\\Users\\mocap\\Desktop\\acrylic\\acrylic_10_heightmap_nrm_scaled.png")
-
-img12 = cv2.imread("C:\\Users\\mocap\\Desktop\\acrylic\\acrylic_11_heightmap_nrm_scaled.png")
-
-img13 = cv2.imread("C:\\Users\\mocap\\Desktop\\acrylic\\acrylic_12_heightmap_nrm_scaled.png")
-
-img14 = cv2.imread("C:\\Users\\mocap\\Desktop\\acrylic\\acrylic_13_heightmap_nrm_scaled.png")
-
-img15 = cv2.imread("C:\\Users\\mocap\\Desktop\\acrylic\\acrylic_14_heightmap_nrm_scaled.png")
-
 
 # scaled pvc
-"""
+
 img1 = cv2.imread("C:\\Users\\mocap\\Desktop\\pvc\\pvc_00_heightmap_nrm_scaled.png")
  
 img2 = cv2.imread("C:\\Users\\mocap\\Desktop\\pvc\\pvc_01_heightmap_nrm_scaled.png")
@@ -204,7 +196,7 @@ img13 = cv2.imread("C:\\Users\\mocap\\Desktop\\pvc\\pvc_12_heightmap_nrm_scaled.
 img14 = cv2.imread("C:\\Users\\mocap\\Desktop\\pvc\\pvc_13_heightmap_nrm_scaled.png")
 
 img15 = cv2.imread("C:\\Users\\mocap\\Desktop\\pvc\\pvc_14_heightmap_nrm_scaled.png")
-"""
+
 
 #THIS IS FOR SECOND METHOD
 
@@ -221,7 +213,7 @@ offset_ver1 = sweep_and_compare_ver(img1, img8, 2000, 2022)
 """
 
 #THIS IS FOR SCALED IMAGES
-
+"""
 offset_hor1 = sweep_and_compare_hor(img1, img2, 2000)
 offset_hor2 = sweep_and_compare_hor(img2, img3, 2000)
 offset_hor3 = sweep_and_compare_hor(img3, img4, 2000)
@@ -247,16 +239,19 @@ img_right4, img_down4 = align_right_and_down(img4, img5, img11, offset_hor4, off
 img_right5, img_down5 = align_right_and_down(img5, img6, img12, offset_hor5, offset_ver5)
 img_right6, img_down6 = align_right_and_down(img6, img7, img13, offset_hor6, offset_ver6)
 img_down7 = align_images_ver(img7, img14, offset_ver7)
+"""
 
+offset_hor1_cma = cma_hor(img1, img2, 2000)
 
-cv2.imshow("acry_down", img_down1)
-cv2.imwrite("acry_down.png", img_down1)
+"""
+cv2.imshow("pvc_down", img_down3)
+cv2.imwrite("pvc_down.png", img_down3)
 cv2.waitKey()
 
-cv2.imshow("acry_down", img_down2)
-cv2.imwrite("acry_down.png", img_down2)
+cv2.imshow("pvc_down1", img_down2)
+cv2.imwrite("pvc_down1.png", img_down2)
 cv2.waitKey()
-
+"""
 
 #Alignment of one row
 """
