@@ -28,21 +28,17 @@ def convert_to_array_ver_al(crop, img) :
 
 def cma_hor(img1, img2, crop1) :
 
-    def obj_fc(x) :
-
-        for x in range(crop1, img1.shape[1]) :
-            n1 = normal_vector(convert_to_array_hor_al(x, img1))
+    def f(x) :
+                
+        for i in range(int(x[0]), img1.shape[1]) :
+           
+            n1 = normal_vector(convert_to_array_hor_al(i, img1))
             n2 = normal_vector(convert_to_array_hor_al(0, img2))
             error = np.linalg.norm(n1 - n2)
-        
-        return error
-    
-    inputs = [crop1]
-    
-    for i in range(crop1, img1.shape[1]) :
-        inputs.append(i + 1)
+            
+            return error
 
-    fc_min = cma.fmin(obj_fc, inputs, 1)
+    fc_min = cma.fmin(f, 2 * [crop1], 10)
    
     print("CMA")
     print(fc_min)
