@@ -9,20 +9,20 @@ def normal_vector(pixels) :
     return np.multiply(pixels, 2) - np.ones(3)
     #2 * pixels - 1
 
+def mean_normals(img) :
+    normals = []
+    for i in range(0, img.shape[0]) :
+        for j in range(0, img.shape[1]) :
+            pixel = img[i, j]/255
+            normals.append(normal_vector(pixel))
+    return np.mean(normals)
+
 def convert_to_array_hor_al(crop, img) :
     col_pixel = []
     for i in range(0, img.shape[0]):
         pixel = img[i, crop]/255
         col_pixel.append(pixel)
     return col_pixel 
-
-def mean_normals(img) :
-    pixels = []
-    for i in range(0, img.shape[0]) :
-        for j in range(0, img.shape[1]) :
-            pixel = img[i, j]/255
-            pixels.append(pixel)
-    return np.mean(pixels)
     
 
 def convert_to_array_ver_al(crop, img) :
@@ -31,7 +31,10 @@ def convert_to_array_ver_al(crop, img) :
         pixel = img[crop, i]/255
         row_pixel.append(pixel)
     return row_pixel 
-
+"""
+def normal_vector(img) :
+    return mean_normals(img)
+"""
 
 #SECOND METHOD OF ALIGNING
 
@@ -46,13 +49,12 @@ def cma_hor(img1, img2, crop1) :
             error = np.linalg.norm(n1 - n2)
             
             return error
+    
+    sigma0 = 10
+    fc_min = cma.fmin(f, 2 * [crop1], sigma0)
+    
+    return (crop1 + (fc_min[2] * sigma0))
 
-    fc_min = cma.fmin(f, 2 * [crop1], 10)
-   
-    """
-    print("CMA")
-    print(fc_min)
-    """
     
 def sweep_and_compare_hor(img1, img2, crop1)  :
     
@@ -67,7 +69,7 @@ def sweep_and_compare_hor(img1, img2, crop1)  :
         
         #FIRST METHOD :
         error = np.linalg.norm(n1 - n2)
-        
+       
         # SECOND METHOD :
         #error = 1 - np.dot(n1, n2)
                 
@@ -75,7 +77,7 @@ def sweep_and_compare_hor(img1, img2, crop1)  :
         
         shift += 1
         shifts.append(shift)
-        
+
     offset = np.argmin(results) + crop1
         
     plt.xlabel('Shift number')
@@ -83,7 +85,7 @@ def sweep_and_compare_hor(img1, img2, crop1)  :
         
     plt.plot(shifts, results)
     plt.show()
-    
+        
     return offset
         
 def align_images_hor(tex1, tex2, offset_hor) :
@@ -124,9 +126,7 @@ def sweep_and_compare_ver(img1, img2, crop1) :
         
     plt.plot(shifts, results)
     plt.show()
-    
-    print(offset)
-    
+        
     return offset
 
 def align_images_ver(tex1, tex2, offset_ver) :
@@ -206,48 +206,35 @@ img15 = cv2.imread("C:\\Users\\mocap\\Desktop\\pvc\\pvc_14_heightmap_nrm_scaled.
 img1 = cv2.imread("C:\\Users\\mocap\\Desktop\\oak\\oak_00_heightmap_nrm_scaled.png")
  
 img2 = cv2.imread("C:\\Users\\mocap\\Desktop\\oak\\oak_01_heightmap_nrm_scaled.png")
-
 img3 = cv2.imread("C:\\Users\\mocap\\Desktop\\oak\\oak_02_heightmap_nrm_scaled.png")
-
 img4 = cv2.imread("C:\\Users\\mocap\\Desktop\\oak\\oak_03_heightmap_nrm_scaled.png")
-
 img5 = cv2.imread("C:\\Users\\mocap\\Desktop\\oak\\oak_04_heightmap_nrm_scaled.png")
-
 img6 = cv2.imread("C:\\Users\\mocap\\Desktop\\oak\\oak_05_heightmap_nrm_scaled.png")
-
 img7 = cv2.imread("C:\\Users\\mocap\\Desktop\\oak\\oak_06_heightmap_nrm_scaled.png")
-
 img8 = cv2.imread("C:\\Users\\mocap\\Desktop\\oak\\oak_07_heightmap_nrm_scaled.png")
-
 img9 = cv2.imread("C:\\Users\\mocap\\Desktop\\oak\\oak_08_heightmap_nrm_scaled.png")
  
 img10 = cv2.imread("C:\\Users\\mocap\\Desktop\\oak\\oak_09_heightmap_nrm_scaled.png")
-
 img11 = cv2.imread("C:\\Users\\mocap\\Desktop\\oak\\oak_10_heightmap_nrm_scaled.png")
-
 img12 = cv2.imread("C:\\Users\\mocap\\Desktop\\oak\\oak_11_heightmap_nrm_scaled.png")
-
 img13 = cv2.imread("C:\\Users\\mocap\\Desktop\\oak\\oak_12_heightmap_nrm_scaled.png")
-
 img14 = cv2.imread("C:\\Users\\mocap\\Desktop\\oak\\oak_13_heightmap_nrm_scaled.png")
-
 img15 = cv2.imread("C:\\Users\\mocap\\Desktop\\oak\\oak_14_heightmap_nrm_scaled.png")
 """
 
 #THIS IS FOR SECOND METHOD
 
 #THIS IS FOR NON-SCALED IMAGES
-
-offset_hor1 = sweep_and_compare_hor(img1, img2, 4700, 1324) 
-offset_hor2 = sweep_and_compare_hor(img2, img3, 4700, 1324)
-offset_hor3 = sweep_and_compare_hor(img3, img4, 4700, 1324)
-offset_hor4 = sweep_and_compare_hor(img4, img5, 4700, 1324)
-offset_hor5 = sweep_and_compare_hor(img5, img6, 4700, 1324)
-offset_hor6 = sweep_and_compare_hor(img6, img7, 4700, 1324)
-
-offset_ver1 = sweep_and_compare_ver(img1, img8, 2000, 2022)
 """
+offset_hor1 = sweep_and_compare_hor(img1, img2, 4700) 
+offset_hor2 = sweep_and_compare_hor(img2, img3, 4700)
+offset_hor3 = sweep_and_compare_hor(img3, img4, 4700)
+offset_hor4 = sweep_and_compare_hor(img4, img5, 4700)
+offset_hor5 = sweep_and_compare_hor(img5, img6, 4700)
+offset_hor6 = sweep_and_compare_hor(img6, img7, 4700)
 
+offset_ver1 = sweep_and_compare_ver(img1, img8, 2000)
+"""
 #THIS IS FOR SCALED IMAGES
 """
 offset_hor1 = sweep_and_compare_hor(img1, img2, 2000)
@@ -280,11 +267,10 @@ cv2.imshow("pvc_down7", img_down7)
 cv2.imwrite("pvc_down7.png", img_down7)
 cv2.waitKey()
 
-cv2.imshow("pvc_right5", img_right5)
-cv2.imwrite("pvc_right5.png", img_right5)
+cv2.imshow("pvc_right1", img_right1)
+cv2.imwrite("pvc_right1.png", img_right1)
 cv2.waitKey()
 """
-
 #Alignment of one row
 """
 final_img = align_row(img_right1, img_right2, img_right3, img_right4, img_right5, img_right6, offset_hor2, offset_hor3, offset_hor4, offset_hor5, offset_hor6)
@@ -292,3 +278,17 @@ final_img = align_row(img_right1, img_right2, img_right3, img_right4, img_right5
 cv2.imshow("final_oak_scaled", final_img)
 cv2.imwrite("final_oak_scaled.png", final_img)
 cv2.waitKey()
+"""
+
+#Using CMA 
+"""
+offset_hor1 = sweep_and_compare_hor(img1, img2, 2000) 
+
+offset_hor1_cma = cma_hor(img1, img2, 2000)
+
+img_right1_cma = align_images_hor(img1, img2, offset_hor1_cma)
+
+cv2.imshow("pvc_right1_cma", img_right1_cma)
+cv2.imwrite("pvc_right1_cma.png", img_right1_cma)
+cv2.waitKey()
+"""
