@@ -39,19 +39,18 @@ def cma_hor(img1, img2, crop1) :
     width = img1.shape[1]
 
     def f(x) :
+        
         offset = x[0] + crop1
-        #if( (width - offset) < 0.1*width ) :
-         #   return 1000
-        #else :
-        for i in range(int(x[0] + crop1), img1.shape[1]) :
-               
+        
+        for i in range(int(offset), width) :
+                       
             n1 = normal_vector(convert_to_array_hor_al(i, img1))
             n2 = normal_vector(convert_to_array_hor_al(0, img2))
             error = np.linalg.norm(n1 - n2)
-                
+                        
             return error
     
-    sigma0 = 0.2 * width
+    sigma0 = 0.15 * width
     fc_min = cma.fmin(f, [0, 0], sigma0)
     
     print(crop1 + int(fc_min[0][0]))
