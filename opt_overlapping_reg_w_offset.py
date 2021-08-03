@@ -31,29 +31,31 @@ def convert_to_array_ver_al(crop, img) :
         pixel = img[crop, i]/255
         row_pixel.append(pixel)
     return row_pixel 
-"""
-def normal_vector(img) :
-    return mean_normals(img)
-"""
 
 #SECOND METHOD OF ALIGNING
 
 def cma_hor(img1, img2, crop1) :
 
+    width = img1.shape[1]
+
     def f(x) :
-                
-        for i in range(int(x[0]), img1.shape[1]) :
-           
+        offset = x[0] + crop1
+        #if( (width - offset) < 0.1*width ) :
+         #   return 1000
+        #else :
+        for i in range(int(x[0] + crop1), img1.shape[1]) :
+               
             n1 = normal_vector(convert_to_array_hor_al(i, img1))
             n2 = normal_vector(convert_to_array_hor_al(0, img2))
             error = np.linalg.norm(n1 - n2)
-            
+                
             return error
     
-    sigma0 = 10
-    fc_min = cma.fmin(f, 2 * [crop1], sigma0)
+    sigma0 = 0.2 * width
+    fc_min = cma.fmin(f, [0, 0], sigma0)
     
-    return (crop1 + (fc_min[2] * sigma0))
+    print(crop1 + int(fc_min[0][0]))
+    return (crop1 + int(fc_min[0][0]))
 
     
 def sweep_and_compare_hor(img1, img2, crop1)  :
@@ -79,7 +81,7 @@ def sweep_and_compare_hor(img1, img2, crop1)  :
         shifts.append(shift)
 
     offset = np.argmin(results) + crop1
-        
+    print(offset)
     plt.xlabel('Shift number')
     plt.ylabel('Loss function value for horizontal alignment')
         
@@ -280,8 +282,11 @@ cv2.imwrite("final_oak_scaled.png", final_img)
 cv2.waitKey()
 """
 
+
 #Using CMA 
-"""
+
+offset_hor1 = sweep_and_compare_hor(img1, img2, 2000)
+
 offset_hor1 = sweep_and_compare_hor(img1, img2, 2000) 
 
 offset_hor1_cma = cma_hor(img1, img2, 2000)
@@ -291,4 +296,3 @@ img_right1_cma = align_images_hor(img1, img2, offset_hor1_cma)
 cv2.imshow("pvc_right1_cma", img_right1_cma)
 cv2.imwrite("pvc_right1_cma.png", img_right1_cma)
 cv2.waitKey()
-"""
