@@ -205,7 +205,6 @@ img15 = cv2.imread("C:\\Users\\mocap\\Desktop\\pvc\\pvc_14_heightmap_nrm_scaled.
 # scaled oak
 """
 img1 = cv2.imread("C:\\Users\\mocap\\Desktop\\oak\\oak_00_heightmap_nrm_scaled.png")
- 
 img2 = cv2.imread("C:\\Users\\mocap\\Desktop\\oak\\oak_01_heightmap_nrm_scaled.png")
 img3 = cv2.imread("C:\\Users\\mocap\\Desktop\\oak\\oak_02_heightmap_nrm_scaled.png")
 img4 = cv2.imread("C:\\Users\\mocap\\Desktop\\oak\\oak_03_heightmap_nrm_scaled.png")
@@ -214,7 +213,6 @@ img6 = cv2.imread("C:\\Users\\mocap\\Desktop\\oak\\oak_05_heightmap_nrm_scaled.p
 img7 = cv2.imread("C:\\Users\\mocap\\Desktop\\oak\\oak_06_heightmap_nrm_scaled.png")
 img8 = cv2.imread("C:\\Users\\mocap\\Desktop\\oak\\oak_07_heightmap_nrm_scaled.png")
 img9 = cv2.imread("C:\\Users\\mocap\\Desktop\\oak\\oak_08_heightmap_nrm_scaled.png")
- 
 img10 = cv2.imread("C:\\Users\\mocap\\Desktop\\oak\\oak_09_heightmap_nrm_scaled.png")
 img11 = cv2.imread("C:\\Users\\mocap\\Desktop\\oak\\oak_10_heightmap_nrm_scaled.png")
 img12 = cv2.imread("C:\\Users\\mocap\\Desktop\\oak\\oak_11_heightmap_nrm_scaled.png")
@@ -233,25 +231,23 @@ offset_hor3 = sweep_and_compare_hor(img3, img4, 4700)
 offset_hor4 = sweep_and_compare_hor(img4, img5, 4700)
 offset_hor5 = sweep_and_compare_hor(img5, img6, 4700)
 offset_hor6 = sweep_and_compare_hor(img6, img7, 4700)
-
 offset_ver1 = sweep_and_compare_ver(img1, img8, 2000)
 """
 #THIS IS FOR SCALED IMAGES
-"""
+
 offset_hor1 = sweep_and_compare_hor(img1, img2, 2000)
 offset_hor2 = sweep_and_compare_hor(img2, img3, 2000)
 offset_hor3 = sweep_and_compare_hor(img3, img4, 2000)
 offset_hor4 = sweep_and_compare_hor(img4, img5, 2000)
 offset_hor5 = sweep_and_compare_hor(img5, img6, 2000)
 offset_hor6 = sweep_and_compare_hor(img6, img7, 2000)
-
-offset_ver1 = sweep_and_compare_ver(img1, img8, 1000)
-offset_ver2 = sweep_and_compare_ver(img2, img9, 1000)
-offset_ver3 = sweep_and_compare_ver(img3, img10, 1000)
-offset_ver4 = sweep_and_compare_ver(img4, img11, 1000)
-offset_ver5 = sweep_and_compare_ver(img5, img12, 1000)
-offset_ver6 = sweep_and_compare_ver(img6, img13, 1000)
-offset_ver7 = sweep_and_compare_ver(img7, img14, 1000)
+offset_ver1 = sweep_and_compare_ver(img1, img8, 1500)
+offset_ver2 = sweep_and_compare_ver(img2, img9, 1500)
+offset_ver3 = sweep_and_compare_ver(img3, img10, 1500)
+offset_ver4 = sweep_and_compare_ver(img4, img11, 1500)
+offset_ver5 = sweep_and_compare_ver(img5, img12, 1500)
+offset_ver6 = sweep_and_compare_ver(img6, img13, 1500)
+offset_ver7 = sweep_and_compare_ver(img7, img14, 1500)
 
 
 #Alignment right and down
@@ -264,14 +260,14 @@ img_right5, img_down5 = align_right_and_down(img5, img6, img12, offset_hor5, off
 img_right6, img_down6 = align_right_and_down(img6, img7, img13, offset_hor6, offset_ver6)
 img_down7 = align_images_ver(img7, img14, offset_ver7)
 
-cv2.imshow("pvc_down7", img_down7)
-cv2.imwrite("pvc_down7.png", img_down7)
+cv2.imshow("let1", img_down1)
+cv2.imwrite("let1.png", img_down1)
 cv2.waitKey()
 
-cv2.imshow("pvc_right1", img_right1)
-cv2.imwrite("pvc_right1.png", img_right1)
+cv2.imshow("let2", img_down7)
+cv2.imwrite("let2.png", img_down7)
 cv2.waitKey()
-"""
+
 #Alignment of one row
 """
 final_img = align_row(img_right1, img_right2, img_right3, img_right4, img_right5, img_right6, offset_hor2, offset_hor3, offset_hor4, offset_hor5, offset_hor6)
@@ -281,11 +277,8 @@ cv2.imwrite("final_oak_scaled.png", final_img)
 cv2.waitKey()
 """
 
-
 #Using CMA 
-
-offset_hor1 = sweep_and_compare_hor(img1, img2, 2000)
-
+"""
 offset_hor1 = sweep_and_compare_hor(img1, img2, 2000) 
 
 offset_hor1_cma = cma_hor(img1, img2, 2000)
@@ -295,3 +288,4 @@ img_right1_cma = align_images_hor(img1, img2, offset_hor1_cma)
 cv2.imshow("pvc_right1_cma", img_right1_cma)
 cv2.imwrite("pvc_right1_cma.png", img_right1_cma)
 cv2.waitKey()
+"""
