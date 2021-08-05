@@ -51,7 +51,7 @@ def cma_hor(img1, img2, crop1) :
             return error
     
     sigma0 = 0.15 * width
-    fc_min = cma.fmin(f, [0, 0], sigma0, incpopsize=10)
+    fc_min = cma.fmin(f, [0, 0], sigma0, noise_handler=cma.NoiseHandler(6), incpopsize=4)
     
     print(crop1 + int(fc_min[0][0]))
     return (crop1 + int(fc_min[0][0]))
@@ -279,13 +279,12 @@ cv2.waitKey()
 
 #Using CMA 
 
-offset_hor1 = sweep_and_compare_hor(img5, img6, 2000) 
+offset_hor1 = sweep_and_compare_hor(img2, img3, 2000) 
 
-offset_hor1_cma = cma_hor(img5, img6, 2000)
+offset_hor1_cma = cma_hor(img2, img3, 2000)
 
-img_right1_cma = align_images_hor(img1, img2, offset_hor1_cma)
-"""
+img_right1_cma = align_images_hor(img2, img3, offset_hor1_cma)
+
 cv2.imshow("pvc_right1_cma", img_right1_cma)
 cv2.imwrite("pvc_right1_cma.png", img_right1_cma)
 cv2.waitKey()
-"""
