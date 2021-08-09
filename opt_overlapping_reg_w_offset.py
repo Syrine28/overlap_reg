@@ -272,7 +272,7 @@ cv2.waitKey()
 
 offset_hor1 = sweep_and_compare_hor(img3, img4, 2000) 
 
-offset_hor1_cma = cma_hor(img3, img4, 2700)
+offset_hor1_cma = cma_hor(img3, img4, 2800)
 
 img_right1_cma = align_images_hor(img2, img3, offset_hor1_cma)
 """
