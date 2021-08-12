@@ -54,7 +54,27 @@ def cma_hor(img1, img2, crop1) :
     sigma0 = 0.15 * width
     fc_min = cma.fmin(f, [0, 0], sigma0, noise_handler=cma.NoiseHandler(6), incpopsize=6)
     
-    print(crop1 + int(fc_min[0][0]))
+    return (crop1 + int(fc_min[0][0]))
+
+def cma_ver(img1, img2, crop1) :
+
+    length = img1.shape[0]
+
+    def f(x) : #objective function
+        
+        offset = x[0] + crop1
+        
+        for i in range(int(offset), length) :
+                       
+            n1 = normal_vector(convert_to_array_ver_al(i, img1))
+            n2 = normal_vector(convert_to_array_ver_al(0, img2))
+            error = np.linalg.norm(n1 - n2)
+                        
+            return error
+    
+    sigma0 = 0.06 * length
+    fc_min = cma.fmin(f, [0, 0], sigma0, noise_handler=cma.NoiseHandler(6), incpopsize=6)
+    
     return (crop1 + int(fc_min[0][0]))
 
 #Returns the optimal horizontal offset based on the minimum error computed with the normals
@@ -81,7 +101,6 @@ def sweep_and_compare_hor(img1, img2, crop1)  :
         shifts.append(shift)
 
     offset = np.argmin(results) + crop1
-    print(offset)
     plt.xlabel('Shift number')
     plt.ylabel('Loss function value for horizontal alignment')
         
@@ -175,35 +194,75 @@ def align_row(img1, img2, img3, img4, img5, img6,
 # scaled pvc
 
 img1 = cv2.imread("C:\\Users\\mocap\\Desktop\\pvc\\pvc_00_heightmap_nrm_scaled.png")
- 
 img2 = cv2.imread("C:\\Users\\mocap\\Desktop\\pvc\\pvc_01_heightmap_nrm_scaled.png")
-
 img3 = cv2.imread("C:\\Users\\mocap\\Desktop\\pvc\\pvc_02_heightmap_nrm_scaled.png")
-
 img4 = cv2.imread("C:\\Users\\mocap\\Desktop\\pvc\\pvc_03_heightmap_nrm_scaled.png")
-
 img5 = cv2.imread("C:\\Users\\mocap\\Desktop\\pvc\\pvc_04_heightmap_nrm_scaled.png")
-
 img6 = cv2.imread("C:\\Users\\mocap\\Desktop\\pvc\\pvc_05_heightmap_nrm_scaled.png")
-
 img7 = cv2.imread("C:\\Users\\mocap\\Desktop\\pvc\\pvc_06_heightmap_nrm_scaled.png")
-
 img8 = cv2.imread("C:\\Users\\mocap\\Desktop\\pvc\\pvc_07_heightmap_nrm_scaled.png")
-
 img9 = cv2.imread("C:\\Users\\mocap\\Desktop\\pvc\\pvc_08_heightmap_nrm_scaled.png")
- 
 img10 = cv2.imread("C:\\Users\\mocap\\Desktop\\pvc\\pvc_09_heightmap_nrm_scaled.png")
-
 img11 = cv2.imread("C:\\Users\\mocap\\Desktop\\pvc\\pvc_10_heightmap_nrm_scaled.png")
-
 img12 = cv2.imread("C:\\Users\\mocap\\Desktop\\pvc\\pvc_11_heightmap_nrm_scaled.png")
-
 img13 = cv2.imread("C:\\Users\\mocap\\Desktop\\pvc\\pvc_12_heightmap_nrm_scaled.png")
-
 img14 = cv2.imread("C:\\Users\\mocap\\Desktop\\pvc\\pvc_13_heightmap_nrm_scaled.png")
-
 img15 = cv2.imread("C:\\Users\\mocap\\Desktop\\pvc\\pvc_14_heightmap_nrm_scaled.png")
-
+img16 = cv2.imread("C:\\Users\\mocap\\Desktop\\pvc\\pvc_15_heightmap_nrm_scaled.png") 
+img17 = cv2.imread("C:\\Users\\mocap\\Desktop\\pvc\\pvc_16_heightmap_nrm_scaled.png")
+img18 = cv2.imread("C:\\Users\\mocap\\Desktop\\pvc\\pvc_17_heightmap_nrm_scaled.png")
+img19 = cv2.imread("C:\\Users\\mocap\\Desktop\\pvc\\pvc_18_heightmap_nrm_scaled.png")
+img20 = cv2.imread("C:\\Users\\mocap\\Desktop\\pvc\\pvc_19_heightmap_nrm_scaled.png")
+img21 = cv2.imread("C:\\Users\\mocap\\Desktop\\pvc\\pvc_20_heightmap_nrm_scaled.png")
+img22 = cv2.imread("C:\\Users\\mocap\\Desktop\\pvc\\pvc_21_heightmap_nrm_scaled.png")
+img23 = cv2.imread("C:\\Users\\mocap\\Desktop\\pvc\\pvc_22_heightmap_nrm_scaled.png")
+img24 = cv2.imread("C:\\Users\\mocap\\Desktop\\pvc\\pvc_23_heightmap_nrm_scaled.png")
+img25 = cv2.imread("C:\\Users\\mocap\\Desktop\\pvc\\pvc_24_heightmap_nrm_scaled.png")
+img26 = cv2.imread("C:\\Users\\mocap\\Desktop\\pvc\\pvc_25_heightmap_nrm_scaled.png")
+img27 = cv2.imread("C:\\Users\\mocap\\Desktop\\pvc\\pvc_26_heightmap_nrm_scaled.png")
+img28 = cv2.imread("C:\\Users\\mocap\\Desktop\\pvc\\pvc_27_heightmap_nrm_scaled.png")
+img29 = cv2.imread("C:\\Users\\mocap\\Desktop\\pvc\\pvc_28_heightmap_nrm_scaled.png")
+img30 = cv2.imread("C:\\Users\\mocap\\Desktop\\pvc\\pvc_29_heightmap_nrm_scaled.png")
+img31 = cv2.imread("C:\\Users\\mocap\\Desktop\\pvc\\pvc_30_heightmap_nrm_scaled.png") 
+img32 = cv2.imread("C:\\Users\\mocap\\Desktop\\pvc\\pvc_31_heightmap_nrm_scaled.png")
+img33 = cv2.imread("C:\\Users\\mocap\\Desktop\\pvc\\pvc_32_heightmap_nrm_scaled.png")
+img34 = cv2.imread("C:\\Users\\mocap\\Desktop\\pvc\\pvc_33_heightmap_nrm_scaled.png")
+img35 = cv2.imread("C:\\Users\\mocap\\Desktop\\pvc\\pvc_34_heightmap_nrm_scaled.png")
+img36 = cv2.imread("C:\\Users\\mocap\\Desktop\\pvc\\pvc_35_heightmap_nrm_scaled.png")
+img37 = cv2.imread("C:\\Users\\mocap\\Desktop\\pvc\\pvc_36_heightmap_nrm_scaled.png")
+img38 = cv2.imread("C:\\Users\\mocap\\Desktop\\pvc\\pvc_37_heightmap_nrm_scaled.png")
+img39 = cv2.imread("C:\\Users\\mocap\\Desktop\\pvc\\pvc_38_heightmap_nrm_scaled.png") 
+img40 = cv2.imread("C:\\Users\\mocap\\Desktop\\pvc\\pvc_39_heightmap_nrm_scaled.png")
+img41 = cv2.imread("C:\\Users\\mocap\\Desktop\\pvc\\pvc_40_heightmap_nrm_scaled.png")
+img42 = cv2.imread("C:\\Users\\mocap\\Desktop\\pvc\\pvc_41_heightmap_nrm_scaled.png")
+img43 = cv2.imread("C:\\Users\\mocap\\Desktop\\pvc\\pvc_42_heightmap_nrm_scaled.png")
+img44 = cv2.imread("C:\\Users\\mocap\\Desktop\\pvc\\pvc_43_heightmap_nrm_scaled.png")
+img45 = cv2.imread("C:\\Users\\mocap\\Desktop\\pvc\\pvc_44_heightmap_nrm_scaled.png")
+img46 = cv2.imread("C:\\Users\\mocap\\Desktop\\pvc\\pvc_45_heightmap_nrm_scaled.png") 
+img47 = cv2.imread("C:\\Users\\mocap\\Desktop\\pvc\\pvc_46_heightmap_nrm_scaled.png")
+img48 = cv2.imread("C:\\Users\\mocap\\Desktop\\pvc\\pvc_47_heightmap_nrm_scaled.png")
+img49 = cv2.imread("C:\\Users\\mocap\\Desktop\\pvc\\pvc_48_heightmap_nrm_scaled.png")
+img50 = cv2.imread("C:\\Users\\mocap\\Desktop\\pvc\\pvc_49_heightmap_nrm_scaled.png")
+img51 = cv2.imread("C:\\Users\\mocap\\Desktop\\pvc\\pvc_50_heightmap_nrm_scaled.png")
+img52 = cv2.imread("C:\\Users\\mocap\\Desktop\\pvc\\pvc_51_heightmap_nrm_scaled.png")
+img53 = cv2.imread("C:\\Users\\mocap\\Desktop\\pvc\\pvc_52_heightmap_nrm_scaled.png")
+img54 = cv2.imread("C:\\Users\\mocap\\Desktop\\pvc\\pvc_53_heightmap_nrm_scaled.png") 
+img55 = cv2.imread("C:\\Users\\mocap\\Desktop\\pvc\\pvc_54_heightmap_nrm_scaled.png")
+img56 = cv2.imread("C:\\Users\\mocap\\Desktop\\pvc\\pvc_55_heightmap_nrm_scaled.png")
+img57 = cv2.imread("C:\\Users\\mocap\\Desktop\\pvc\\pvc_56_heightmap_nrm_scaled.png")
+img58 = cv2.imread("C:\\Users\\mocap\\Desktop\\pvc\\pvc_57_heightmap_nrm_scaled.png")
+img59 = cv2.imread("C:\\Users\\mocap\\Desktop\\pvc\\pvc_58_heightmap_nrm_scaled.png")
+img60 = cv2.imread("C:\\Users\\mocap\\Desktop\\pvc\\pvc_59_heightmap_nrm_scaled.png")
+img61 = cv2.imread("C:\\Users\\mocap\\Desktop\\pvc\\pvc_60_heightmap_nrm_scaled.png")
+img62 = cv2.imread("C:\\Users\\mocap\\Desktop\\pvc\\pvc_61_heightmap_nrm_scaled.png")
+img63 = cv2.imread("C:\\Users\\mocap\\Desktop\\pvc\\pvc_62_heightmap_nrm_scaled.png")
+img64 = cv2.imread("C:\\Users\\mocap\\Desktop\\pvc\\pvc_63_heightmap_nrm_scaled.png")
+img65 = cv2.imread("C:\\Users\\mocap\\Desktop\\pvc\\pvc_64_heightmap_nrm_scaled.png")
+img66 = cv2.imread("C:\\Users\\mocap\\Desktop\\pvc\\pvc_65_heightmap_nrm_scaled.png")
+img67 = cv2.imread("C:\\Users\\mocap\\Desktop\\pvc\\pvc_66_heightmap_nrm_scaled.png")
+img68 = cv2.imread("C:\\Users\\mocap\\Desktop\\pvc\\pvc_67_heightmap_nrm_scaled.png")
+img69 = cv2.imread("C:\\Users\\mocap\\Desktop\\pvc\\pvc_68_heightmap_nrm_scaled.png")
+img70 = cv2.imread("C:\\Users\\mocap\\Desktop\\pvc\\pvc_69_heightmap_nrm_scaled.png")
 
 # scaled oak
 """
@@ -232,6 +291,7 @@ offset_hor3 = sweep_and_compare_hor(img3, img4, 2000)
 offset_hor4 = sweep_and_compare_hor(img4, img5, 2000)
 offset_hor5 = sweep_and_compare_hor(img5, img6, 2000)
 offset_hor6 = sweep_and_compare_hor(img6, img7, 2000)
+
 offset_ver1 = sweep_and_compare_ver(img1, img8, 1500)
 offset_ver2 = sweep_and_compare_ver(img2, img9, 1500)
 offset_ver3 = sweep_and_compare_ver(img3, img10, 1500)
@@ -251,32 +311,129 @@ img_right5, img_down5 = align_right_and_down(img5, img6, img12, offset_hor5, off
 img_right6, img_down6 = align_right_and_down(img6, img7, img13, offset_hor6, offset_ver6)
 img_down7 = align_images_ver(img7, img14, offset_ver7)
 
-cv2.imshow("let1", img_right1)
-cv2.imwrite("let1.png", img_right1)
+cv2.imshow("down7", img_down7)
+cv2.imwrite("down7.png", img_down7)
 cv2.waitKey()
 
-cv2.imshow("let2", img_right4)
-cv2.imwrite("let2.png", img_right4)
+cv2.imshow("right6", img_right6)
+cv2.imwrite("right6.png", img_right6)
 cv2.waitKey()
-
+"""
 #Alignment of one row
 
-final_img = align_row(img_right1, img_right2, img_right3, img_right4, img_right5, img_right6, offset_hor2, offset_hor3, offset_hor4, offset_hor5, offset_hor6)
+#First row
+#final_img = align_row(img_right1, img_right2, img_right3, img_right4, img_right5, img_right6, offset_hor2, offset_hor3, offset_hor4, offset_hor5, offset_hor6)
+#Second row
+"""
+offset_hor8 = sweep_and_compare_hor(img8, img9, 2000)
+offset_hor9 = sweep_and_compare_hor(img9, img10, 2000)
+offset_hor10 = sweep_and_compare_hor(img10, img11, 2000)
+offset_hor11 = sweep_and_compare_hor(img11, img12, 2000)
+offset_hor12 = sweep_and_compare_hor(img12, img13, 2000)
+offset_hor13 = sweep_and_compare_hor(img13, img14, 2000)
 
-cv2.imshow("final_oak_scaled", final_img)
-cv2.imwrite("final_oak_scaled.png", final_img)
+
+img_right8 = align_images_hor(img8, img9, offset_hor8)
+img_right9 = align_images_hor(img9, img10, offset_hor9)
+img_right10 = align_images_hor(img10, img11, offset_hor10)
+img_right11 = align_images_hor(img11, img12, offset_hor11)
+img_right12 = align_images_hor(img12, img13, offset_hor12)
+img_right13 = align_images_hor(img13, img14, offset_hor13)
+
+final_img = align_row(img_right8, img_right9, img_right10, img_right11, img_right12, img_right13, offset_hor9, offset_hor10, offset_hor11, offset_hor12, offset_hor13)
+
+cv2.imshow("final_pvc_scaled", final_img)
+cv2.imwrite("final_pvc_scaled.png", final_img)
 cv2.waitKey()
 """
-
 #Using CMA 
-
-offset_hor1 = sweep_and_compare_hor(img3, img4, 2000) 
-
-offset_hor1_cma = cma_hor(img3, img4, 2800)
-
-img_right1_cma = align_images_hor(img2, img3, offset_hor1_cma)
 """
-cv2.imshow("pvc_right1_cma", img_right1_cma)
-cv2.imwrite("pvc_right1_cma.png", img_right1_cma)
+offset_hor = sweep_and_compare_hor(img3, img4, 2000) 
+
+offset_hor_cma = cma_hor(img3, img4, 2800)
+"""
+
+offset_ver = sweep_and_compare_ver(img7, img14, 1500)
+print(offset_ver)
+
+offset_ver_cma = cma_ver(img7, img14, 1600)
+print(offset_ver_cma)
+
+cma_ver = align_images_ver(img7, img14, offset_ver_cma)
+
+cv2.imshow("cma_ver", cma_ver)
+cv2.imwrite("cma_ver.png", cma_ver)
 cv2.waitKey()
+
+#Printing all offsets using cma
+"""
+offh1 = cma_hor(img1, img2, 2800)
+offh2 = cma_hor(img2, img3, 2800)
+offh3 = cma_hor(img3, img4, 2800)
+offh4 = cma_hor(img4, img5, 2800)
+offh5 = cma_hor(img5, img6, 2800)
+offh6 = cma_hor(img6, img7, 2800)
+
+offh8 = cma_hor(img8, img9, 2800)
+offh9 = cma_hor(img9, img10, 2800)
+offh10 = cma_hor(img10, img11, 2800)
+offh11 = cma_hor(img11, img12, 2800)
+offh12 = cma_hor(img12, img13, 2800)
+offh13 = cma_hor(img13, img14, 2800)
+
+offh15 = cma_hor(img15, img16, 2800)
+offh16 = cma_hor(img16, img17, 2800)
+offh17 = cma_hor(img17, img18, 2800)
+offh18 = cma_hor(img18, img19, 2800)
+offh19 = cma_hor(img19, img20, 2800)
+offh20 = cma_hor(img20, img21, 2800)
+
+offh22 = cma_hor(img22, img23, 2800)
+offh23 = cma_hor(img23, img24, 2800)
+offh24 = cma_hor(img24, img25, 2800)
+offh25 = cma_hor(img25, img26, 2800)
+offh26 = cma_hor(img26, img27, 2800)
+offh27 = cma_hor(img27, img28, 2800)
+
+offh29 = cma_hor(img29, img30, 2800)
+offh30 = cma_hor(img30, img31, 2800)
+offh31 = cma_hor(img31, img32, 2800)
+offh32 = cma_hor(img32, img33, 2800)
+offh33 = cma_hor(img33, img34, 2800)
+offh34 = cma_hor(img34, img35, 2800)
+
+offh36 = cma_hor(img36, img37, 2800)
+offh37 = cma_hor(img37, img38, 2800)
+offh38 = cma_hor(img38, img39, 2800)
+offh39 = cma_hor(img39, img40, 2800)
+offh40 = cma_hor(img40, img41, 2800)
+offh41 = cma_hor(img41, img42, 2800)
+
+offh43 = cma_hor(img43, img44, 2800)
+offh44 = cma_hor(img44, img45, 2800)
+offh45 = cma_hor(img45, img46, 2800)
+offh46 = cma_hor(img46, img47, 2800)
+offh47 = cma_hor(img47, img48, 2800)
+offh48 = cma_hor(img48, img49, 2800)
+
+offh50 = cma_hor(img50, img51, 2800)
+offh51 = cma_hor(img51, img52, 2800)
+offh52 = cma_hor(img52, img53, 2800)
+offh53 = cma_hor(img53, img54, 2800)
+offh54 = cma_hor(img54, img55, 2800)
+offh55 = cma_hor(img55, img56, 2800)
+
+offh57 = cma_hor(img57, img58, 2800)
+offh58 = cma_hor(img58, img59, 2800)
+offh59 = cma_hor(img59, img60, 2800)
+offh60 = cma_hor(img60, img61, 2800)
+offh61 = cma_hor(img61, img62, 2800)
+offh62 = cma_hor(img62, img63, 2800)
+
+offh64 = cma_hor(img64, img65, 2800)
+offh65 = cma_hor(img65, img66, 2800)
+offh66 = cma_hor(img66, img67, 2800)
+offh67 = cma_hor(img67, img68, 2800)
+offh68 = cma_hor(img68, img69, 2800)
+offh69 = cma_hor(img69, img70, 2800)
 """
