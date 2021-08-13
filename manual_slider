@@ -97,7 +97,7 @@ root.geometry("500x400")
 my_spin = Spinbox(root, from_ = 1000, to = 1506)
 my_spin.pack(pady = 20)
 
-my_button = Button(root, text = "Compute loss function", command = grab)
+my_button = Button(root, text = "Compute loss function and show alignment", command = grab)
 my_button.pack(pady = 20)
 
 my_label = Label(root, text = "")
