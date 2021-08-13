@@ -1,8 +1,6 @@
 import numpy as np
-import os
 import cv2
 import matplotlib.pyplot as plt
-from sklearn.metrics import mean_absolute_error as mae
 import cma
 
 def normal_vector(pixels) :
@@ -47,7 +45,8 @@ def cma_hor(img1, img2, crop1) :
                        
             n1 = normal_vector(convert_to_array_hor_al(i, img1))
             n2 = normal_vector(convert_to_array_hor_al(0, img2))
-            error = np.linalg.norm(n1 - n2)
+
+            error = np.dot(n1.reshape(-1), n2.reshape(-1))
                         
             return error
     
@@ -68,7 +67,8 @@ def cma_ver(img1, img2, crop1) :
                        
             n1 = normal_vector(convert_to_array_ver_al(i, img1))
             n2 = normal_vector(convert_to_array_ver_al(0, img2))
-            error = np.linalg.norm(n1 - n2)
+            
+            error = np.dot(n1.reshape(-1), n2.reshape(-1))
                         
             return error
     
@@ -90,10 +90,10 @@ def sweep_and_compare_hor(img1, img2, crop1)  :
         n2 = normal_vector(convert_to_array_hor_al(0, img2))
         
         #FIRST METHOD :
-        error = np.linalg.norm(n1 - n2)
+        #error = np.linalg.norm(n1 - n2)
        
         # SECOND METHOD :
-        #error = 1 - np.dot(n1, n2)
+        error = np.dot(n1.reshape(-1), n2.reshape(-1))
                 
         results.append(error)
         
@@ -132,10 +132,10 @@ def sweep_and_compare_ver(img1, img2, crop1) :
         n2 = normal_vector(convert_to_array_ver_al(0, img2))
         
         # FIRST METHOD : 
-        error = np.linalg.norm(n1 - n2) 
+        #error = np.linalg.norm(n1 - n2) 
         
         # SECOND METHOD :
-        #error = 1 - np.dot(n1, n2)
+        error = np.dot(n1.reshape(-1), n2.reshape(-1))
             
         results.append(error)
         
@@ -264,25 +264,6 @@ img68 = cv2.imread("C:\\Users\\mocap\\Desktop\\pvc\\pvc_67_heightmap_nrm_scaled.
 img69 = cv2.imread("C:\\Users\\mocap\\Desktop\\pvc\\pvc_68_heightmap_nrm_scaled.png")
 img70 = cv2.imread("C:\\Users\\mocap\\Desktop\\pvc\\pvc_69_heightmap_nrm_scaled.png")
 
-# scaled oak
-"""
-img1 = cv2.imread("C:\\Users\\mocap\\Desktop\\oak\\oak_00_heightmap_nrm_scaled.png")
-img2 = cv2.imread("C:\\Users\\mocap\\Desktop\\oak\\oak_01_heightmap_nrm_scaled.png")
-img3 = cv2.imread("C:\\Users\\mocap\\Desktop\\oak\\oak_02_heightmap_nrm_scaled.png")
-img4 = cv2.imread("C:\\Users\\mocap\\Desktop\\oak\\oak_03_heightmap_nrm_scaled.png")
-img5 = cv2.imread("C:\\Users\\mocap\\Desktop\\oak\\oak_04_heightmap_nrm_scaled.png")
-img6 = cv2.imread("C:\\Users\\mocap\\Desktop\\oak\\oak_05_heightmap_nrm_scaled.png")
-img7 = cv2.imread("C:\\Users\\mocap\\Desktop\\oak\\oak_06_heightmap_nrm_scaled.png")
-img8 = cv2.imread("C:\\Users\\mocap\\Desktop\\oak\\oak_07_heightmap_nrm_scaled.png")
-img9 = cv2.imread("C:\\Users\\mocap\\Desktop\\oak\\oak_08_heightmap_nrm_scaled.png")
-img10 = cv2.imread("C:\\Users\\mocap\\Desktop\\oak\\oak_09_heightmap_nrm_scaled.png")
-img11 = cv2.imread("C:\\Users\\mocap\\Desktop\\oak\\oak_10_heightmap_nrm_scaled.png")
-img12 = cv2.imread("C:\\Users\\mocap\\Desktop\\oak\\oak_11_heightmap_nrm_scaled.png")
-img13 = cv2.imread("C:\\Users\\mocap\\Desktop\\oak\\oak_12_heightmap_nrm_scaled.png")
-img14 = cv2.imread("C:\\Users\\mocap\\Desktop\\oak\\oak_13_heightmap_nrm_scaled.png")
-img15 = cv2.imread("C:\\Users\\mocap\\Desktop\\oak\\oak_14_heightmap_nrm_scaled.png")
-"""
-
 #THIS IS FOR SCALED IMAGES
 """
 offset_hor1 = sweep_and_compare_hor(img1, img2, 2000)
@@ -347,12 +328,14 @@ cv2.imwrite("final_pvc_scaled.png", final_img)
 cv2.waitKey()
 """
 #Using CMA 
-"""
+
 offset_hor = sweep_and_compare_hor(img3, img4, 2000) 
+print(offset_hor)
 
 offset_hor_cma = cma_hor(img3, img4, 2800)
-"""
+print(offset_hor_cma)
 
+"""
 offset_ver = sweep_and_compare_ver(img8, img15, 1500)
 print(offset_ver)
 
@@ -585,3 +568,11 @@ imgr60, imgd60 = align_right_and_down(img60, img61, img67, offh60, offv60)
 imgr61, imgd61 = align_right_and_down(img61, img62, img68, offh61, offv61)
 imgr62, imgd62 = align_right_and_down(img62, img63, img69, offh62, offv62)
 imgd63 = align_images_ver(img63, img70, offv63)
+
+imgr64 = align_images_hor(img64, img65, offh64)
+imgr65 = align_images_hor(img65, img66, offh65)
+imgr66 = align_images_hor(img66, img67, offh66)
+imgr67 = align_images_hor(img67, img68, offh67)
+imgr68 = align_images_hor(img68, img69, offh68)
+imgr69 = align_images_hor(img69, img70, offh69)
+"""
