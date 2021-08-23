@@ -4,42 +4,51 @@ import matplotlib.pyplot as plt
 import cma
 
 def normal_vector(pixels) :
-    #2 * pixels - 1
-    return np.multiply(pixels, 2) - np.ones(3) 
+    
+    return np.multiply(pixels, 2) - np.ones(3) # 2 * pixels - 1
 
 #Returns the mean of the normals of an image
 def mean_normals(img) :
+    
     normals = []
+    
     for i in range(0, img.shape[0]) :
         for j in range(0, img.shape[1]) :
             pixel = img[i, j]/255
             normals.append(normal_vector(pixel))
+            
     return np.mean(normals)
 
 #Converts an image into columns of pixels
 def convert_to_array_hor_al(crop, img) :
+    
     col_pixel = []
+    
     for i in range(0, img.shape[0]):
         pixel = img[i, crop]/255
         col_pixel.append(pixel)
+        
     return col_pixel 
     
 #Converts an image into rows of pixels
 def convert_to_array_ver_al(crop, img) :
+    
     row_pixel = []
+    
     for i in range(0, img.shape[1]):
         pixel = img[crop, i]/255
         row_pixel.append(pixel)
+        
     return row_pixel 
 
 #CMA alignment
-def cma_hor(img1, img2, crop1) :
+def cma_hor(img1, img2, offset0) :
 
     width = img1.shape[1]
 
-    def f(x) : #objective function
+    def f(x) : #Objective function
         
-        offset = x[0] + crop1
+        offset = x[0] + offset0
         
         for i in range(int(offset), width) :
                        
@@ -50,18 +59,18 @@ def cma_hor(img1, img2, crop1) :
                         
             return error
     
-    sigma0 = 0.15 * width
-    fc_min = cma.fmin(f, [0, 0], sigma0, noise_handler=cma.NoiseHandler(6), incpopsize=6)
+    sigma = 0.15 * width
+    fc_min = cma.fmin(f, [0, 0], sigma, noise_handler=cma.NoiseHandler(6), incpopsize=6)
     
-    return (crop1 + int(fc_min[0][0]))
+    return (offset0 + int(fc_min[0][0]))
 
-def cma_ver(img1, img2, crop1) :
+def cma_ver(img1, img2, offset0) :
 
     length = img1.shape[0]
 
-    def f(x) : #objective function
+    def f(x) : #Objective function
         
-        offset = x[0] + crop1
+        offset = x[0] + offset0
         
         for i in range(int(offset), length) :
                        
@@ -72,24 +81,24 @@ def cma_ver(img1, img2, crop1) :
                         
             return error
     
-    sigma0 = 0.06 * length
-    fc_min = cma.fmin(f, [0, 0], sigma0, noise_handler=cma.NoiseHandler(6), incpopsize=6)
+    sigma = 0.06 * length
+    fc_min = cma.fmin(f, [0, 0], sigma, noise_handler=cma.NoiseHandler(6), incpopsize=6)
     
-    return (crop1 + int(fc_min[0][0]))
+    return (offset0 + int(fc_min[0][0]))
 
 #Returns the optimal horizontal offset based on the minimum error computed with the normals
-def sweep_and_compare_hor(img1, img2, crop1)  :
+def sweep_and_compare_hor(img1, img2, offset0)  :
     
     results = []
     shifts = []
     shift = -1  
     
-    for i in range(crop1, img1.shape[1]) :
+    for i in range(offset0, img1.shape[1]) : #Ranging from the starting offset coordinate to the width of the image
         
         n1 = normal_vector(convert_to_array_hor_al(i, img1))
         n2 = normal_vector(convert_to_array_hor_al(0, img2))
         
-        #FIRST METHOD :
+        # FIRST METHOD :
         #error = np.linalg.norm(n1 - n2)
        
         # SECOND METHOD :
@@ -100,7 +109,9 @@ def sweep_and_compare_hor(img1, img2, crop1)  :
         shift += 1
         shifts.append(shift)
 
-    offset = np.argmin(results) + crop1
+    offset = np.argmin(results) + offset0
+    
+    #Plotting
     plt.xlabel('Shift number')
     plt.ylabel('Loss function value for horizontal alignment')
         
@@ -113,20 +124,20 @@ def sweep_and_compare_hor(img1, img2, crop1)  :
 def align_images_hor(tex1, tex2, offset_hor) :
     
     height1 = tex1.shape[0]
-    tex1_wo_overlap = tex1[0:height1, 0:offset_hor].copy()
+    tex1_wo_overlap = tex1[0:height1, 0:offset_hor].copy() #Fixed image without the overlapping region
     
     final_img = np.concatenate((tex1_wo_overlap, tex2), axis=1)
     
     return final_img
 
 #Returns the optimal vertical offset based on the minimum error computed with the normals
-def sweep_and_compare_ver(img1, img2, crop1) :
+def sweep_and_compare_ver(img1, img2, offset0) :
     
     results = []
     shifts = []
     shift = -1
     
-    for i in range(crop1, img1.shape[0]) :
+    for i in range(offset0, img1.shape[0]) : #Ranging from the starting offset coordinate to the height of the image
         
         n1 = normal_vector(convert_to_array_ver_al(i, img1))
         n2 = normal_vector(convert_to_array_ver_al(0, img2))
@@ -142,8 +153,9 @@ def sweep_and_compare_ver(img1, img2, crop1) :
         shift += 1
         shifts.append(shift)
         
-    offset = np.argmin(results) + crop1
+    offset = np.argmin(results) + offset0
     
+    #Plotting
     plt.xlabel('Shift number')
     plt.ylabel('Loss function value for vertical alignment')
         
@@ -156,7 +168,7 @@ def sweep_and_compare_ver(img1, img2, crop1) :
 def align_images_ver(tex1, tex2, offset_ver) :
 
     width1 = tex1.shape[1]
-    tex1_wo_overlap = tex1[0:offset_ver, 0:width1].copy()
+    tex1_wo_overlap = tex1[0:offset_ver, 0:width1].copy() #Fixed image without the overlapping region
     
     final_img = np.concatenate((tex1_wo_overlap, tex2), axis=0)
      
@@ -164,11 +176,10 @@ def align_images_ver(tex1, tex2, offset_ver) :
 
 #Aligns an image to the one to its right and the one below it
 def align_right_and_down(img, img_right, img_down, offset_hor, offset_ver) :
-    #blended_right = cv2.addWeighted(overlap_right1, 0.75, overlap_right2, 0.25, 0.0)
-    #blended_down = cv2.addWeighted(overlap_down1, 0.75, overlap_down2, 0.25, 0.0)
     
     final_right = align_images_hor(img, img_right, offset_hor)
     final_down = align_images_ver(img, img_down, offset_ver)
+    
     return final_right, final_down   
     
 #Aligns a whole row
@@ -191,7 +202,7 @@ def align_row(img1, img2, img3, img4, img5, img6,
     return final
 
 
-# scaled pvc
+#Opening the scaled pvc scans
 
 img1 = cv2.imread("C:\\Users\\mocap\\Desktop\\pvc\\pvc_00_heightmap_nrm_scaled.png")
 img2 = cv2.imread("C:\\Users\\mocap\\Desktop\\pvc\\pvc_01_heightmap_nrm_scaled.png")
@@ -264,7 +275,7 @@ img68 = cv2.imread("C:\\Users\\mocap\\Desktop\\pvc\\pvc_67_heightmap_nrm_scaled.
 img69 = cv2.imread("C:\\Users\\mocap\\Desktop\\pvc\\pvc_68_heightmap_nrm_scaled.png")
 img70 = cv2.imread("C:\\Users\\mocap\\Desktop\\pvc\\pvc_69_heightmap_nrm_scaled.png")
 
-#THIS IS FOR SCALED IMAGES
+#THIS IS FOR SCALED IMAGES (using the standard function, i.e. not CMA)
 """
 offset_hor1 = sweep_and_compare_hor(img1, img2, 2000)
 offset_hor2 = sweep_and_compare_hor(img2, img3, 2000)
@@ -280,7 +291,6 @@ offset_ver4 = sweep_and_compare_ver(img4, img11, 1500)
 offset_ver5 = sweep_and_compare_ver(img5, img12, 1500)
 offset_ver6 = sweep_and_compare_ver(img6, img13, 1500)
 offset_ver7 = sweep_and_compare_ver(img7, img14, 1500)
-
 
 #Alignment right and down
 
@@ -327,28 +337,9 @@ cv2.imshow("final_pvc_scaled", final_img)
 cv2.imwrite("final_pvc_scaled.png", final_img)
 cv2.waitKey()
 """
-#Using CMA 
-
-offset_hor = sweep_and_compare_hor(img3, img4, 2000) 
-print(offset_hor)
-
-offset_hor_cma = cma_hor(img3, img4, 2800)
-print(offset_hor_cma)
 
 """
-offset_ver = sweep_and_compare_ver(img8, img15, 1500)
-print(offset_ver)
-
-offset_ver_cma = cma_ver(img8, img15, 1600)
-print(offset_ver_cma)
-
-cma_ver = align_images_ver(img8, img15, offset_ver_cma)
-
-cv2.imshow("cma_ver", cma_ver)
-cv2.imwrite("cma_ver.png", cma_ver)
-cv2.waitKey()
-
-#Printing all offsets using cma
+#Printing all offsets using CMA
 
 #Horizontal
 offh1 = cma_hor(img1, img2, 2800)
