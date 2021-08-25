@@ -78,5 +78,5 @@ Therefore, for the horizontal alignment, sigma is equal to 0.15 * width and for 
 
 Moreover, in order to visually compare the alignments given by the different offsets, I created a manual slider where you enter an offset in the range of the picture’s width then you click on a button and it computes the loss function (returns the value) and makes the alignment given by the chosen offset appear.
 
-![Alt text](file:///Users/syrineenneifer/Desktop/Capture%20d%E2%80%99e%CC%81cran,%20le%202021-08-21%20a%CC%80%2015.42.50.png)
+!(file:///Users/syrineenneifer/Desktop/Capture%20d%E2%80%99e%CC%81cran,%20le%202021-08-21%20a%CC%80%2015.42.50.png)
 
