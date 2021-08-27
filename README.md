@@ -1,17 +1,6 @@
-Since May I’ve been focusing on the modelling of different textures by firstly getting the necessary data which consisted of scanning cubes with the help of Gelsight and approximate manual sweeping. The second part of the work was to align the different scans I had collected by minimizing a loss function based on the normal map logic.
-
-
-
 Scanning:
 
 I was presented with these cubes with different textures that we wanted to modelize numerically. More specifically, we wanted to scan one side of each cube in order to identify the various features that they presented.
-
-
-
-
-
-
-
 
 After opening the camera and the gelsight application, I had to calibrate after cleaning the material and the glass in order to get the most accurate results possible.
 
@@ -23,16 +12,6 @@ We wanted to get 70 pictures for each cube, i.e. 7 scans per row. The scanning p
 
 
 Once all 70 scans were taken, I had to generate the 3D model of each image to be able to obtain the heightmaps that we would use later as our data for the alignment.
-
-
-
-
-
-
-
-
-
-
 
 
 Aligning:
@@ -47,7 +26,6 @@ For the comparison, we firstly decided to use the squared difference of the two 
 
 We then plotted the loss function to be able to see a clear minimum and extract from that the value of the offset (the loss function also returns the best offset). 
 
-An example of a plot for a horizontal alignment :
 The shift number is added to the coordinate where we start sweeping in the picture and the sum gives the best offset for the alignment.
 
 
@@ -55,16 +33,7 @@ The shift number is added to the coordinate where we start sweeping in the pictu
 After that, I created a function that superimposes the moving image on top of the fixed image starting at the optimal offset. 
 
 
-An example of a horizontal alignment of 2 pvc scans :
-
-
-
 NOTE THAT the images were scaled down by half in order to have a faster program, especially for row alignments.
-
-
-
-An example of a pvc row alignment :
-
 
 
 I also created another alignment function based on the same principles but that uses cma. It was very buggy in the beginning because I had to adapt the sigma and the x0 values to each alignment which wasn’t an easy nor a fast process. Adding a noise handler and increasing the population size also helped in reducing the off and inadequate results.
@@ -77,6 +46,3 @@ Therefore, for the horizontal alignment, sigma is equal to 0.15 * width and for 
 
 
 Moreover, in order to visually compare the alignments given by the different offsets, I created a manual slider where you enter an offset in the range of the picture’s width then you click on a button and it computes the loss function (returns the value) and makes the alignment given by the chosen offset appear.
-
-![Imgur Image](file:///Users/syrineenneifer/Desktop/Capture%20d%E2%80%99e%CC%81cran,%20le%202021-08-21%20a%CC%80%2015.42.50.png)
-
